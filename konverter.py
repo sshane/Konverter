@@ -2,8 +2,6 @@ import numpy as np
 from utils.BASEDIR import BASEDIR
 from tensorflow import keras
 from utils.support_classes import SupportedAttrs, LayerInfo, ActivationFunctions
-import json
-import pickle
 import os
 
 
