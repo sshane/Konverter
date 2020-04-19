@@ -15,7 +15,7 @@ class Konverter:
     self.tab_spaces = tab_spaces
 
     self.layers = []
-    self.watermark = '"""\n  Created using Konverter: https://github.com/ShaneSmiskol/Konverter\n"""\n\n'
+    self.watermark = '"""\n  Generated using Konverter: https://github.com/ShaneSmiskol/Konverter\n"""\n\n'
     self.is_model()
 
     self.get_layers()

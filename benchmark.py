@@ -9,7 +9,7 @@ from generated import predict
 model = keras.models.load_model('{}/dense_model.h5'.format(BASEDIR))
 Konverter(model, model_name='dense_model', output_file='generated.py', tab_spaces=2)  # creates the numpy model from the keras model
 
-samples = np.array([[np.random.uniform(0, 5)] for _ in range(10000)])
+samples = np.array([[np.random.uniform(0, 20)] for _ in range(10000)])
 
 t = time.time()
 model.predict(samples)

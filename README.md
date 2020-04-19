@@ -4,7 +4,7 @@
 The goal of this tool is to provide a quick and easy way to execute simple Keras models on machines or setups where utilizing TensorFlow/Keras is impossible. Specifically, in my case, to replace SNPE (Snapdragon Neural Processing Engine) for inference on phones with Python.
 
 ---
-This is a work in progress, currently only the following are supported:
+This tool is a work in progress, currently only the following are supported:
 
   - Models:
     1. Sequential
@@ -23,13 +23,13 @@ The following are guaranteed to work (2D data might work but is untested at this
 
 Benchmark (see exact model in [build_test_model.py](build_test_model.py)):
 ```
-    Keras model batch prediction time: 0.405091s
-    Konverted model batch prediction time: 0.005002s
+    Keras model batch prediction time: 0.425096s
+    Konverted model batch prediction time: 0.029006s
     -----
-    Keras model single prediction time: 155.646902s
-    Konverted model single prediction time: 0.119027s
+    Keras model single prediction time: 147.580526s
+    Konverted model single prediction time: 0.248865s
     
     keras vs. konverted model:
-    Mean absolute error for 10000 predictions: 2.434262684936961e-07
-    Mean squared error for 10000 predictions: 9.782740443465008e-14
+    Mean absolute error for 10000 predictions: 9.545292139046203e-07
+    Mean squared error for 10000 predictions: 3.000984240332397e-12
 ```
