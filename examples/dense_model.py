@@ -12,7 +12,7 @@ def relu(x):
 
 def predict(x):
   l0 = np.dot(x, w[0]) + b[0]
-  l0 = relu(l0)
+  l0 = np.tanh(l0)
   l1 = np.dot(l0, w[1]) + b[1]
   l1 = relu(l1)
   l2 = np.dot(l1, w[2]) + b[2]
@@ -20,14 +20,4 @@ def predict(x):
   l3 = np.dot(l2, w[3]) + b[3]
   l3 = relu(l3)
   l4 = np.dot(l3, w[4]) + b[4]
-  l4 = relu(l4)
-  l5 = np.dot(l4, w[5]) + b[5]
-  l5 = relu(l5)
-  l6 = np.dot(l5, w[6]) + b[6]
-  l6 = relu(l6)
-  l7 = np.dot(l6, w[7]) + b[7]
-  l7 = relu(l7)
-  l8 = np.dot(l7, w[8]) + b[8]
-  l8 = relu(l8)
-  l9 = np.dot(l8, w[9]) + b[9]
-  return l9
+  return l4

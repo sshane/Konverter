@@ -8,9 +8,9 @@ from examples.dense_model import predict
 
 os.chdir(BASEDIR)
 model = keras.models.load_model('examples/dense_model.h5')
-Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
+# Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
 
-samples = np.array([[np.random.uniform(0, 20)] for _ in range(500)])
+samples = np.array([[np.random.uniform(0, 20), np.random.uniform(0, 20), np.random.uniform(0, 20)] for _ in range(10000)])
 print('samples: {}\n'.format(len(samples)))
 
 t = time.time()
@@ -26,13 +26,13 @@ print('-----')
 t = time.time()
 keras_preds = []
 for i in samples:
-  keras_preds.append(model.predict(i)[0][0])
+  keras_preds.append(model.predict([[i]])[0])
 print('Keras model single prediction time: {}s'.format(round(time.time() - t, 6)))
 
 t = time.time()
 konverter_preds = []
 for i in samples:
-  konverter_preds.append(predict([i])[0][0])
+  konverter_preds.append(predict([i])[0])
 print('Konverted model single prediction time: {}s'.format(round(time.time() - t, 6)))
 
 
