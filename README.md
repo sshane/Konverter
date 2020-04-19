@@ -14,7 +14,8 @@ This tool is a work in progress, currently only the following are supported:
     1. ReLU
     2. Sigmoid
     3. Softmax
-    4. Linear
+    4. Tanh
+    5. Linear/None
 
 The following data shapes are guaranteed to work (pretty much anything you can do with dense):
 
@@ -29,19 +30,17 @@ Usage:
 ---
 To be added.
 
-**Important (current limitations): The dimensionality of the input data matters when predicting with your Konverted model in certain cases. For example, with a `softmax`/`binary_crossentropy` model, executing the following will output all 1's:**
+**Important (current limitations): When working with models using `softmax`, the dimensionality of the input data matters. For example, with certain models (specifically `softmax`), predicting on the same data with an incorrect dimensionality could result in an incorrect prediction:**
 ```python
->>> predict([[0.5]])
-[[1.0, 1.0, 1.0, 1.0]]
+>>> model.predict([[1, 3, 5]])  # keras model
+array([[14.792273, 15.59787 , 15.543163]])
+>>> predict([[1, 3, 5]])  # Konverted model, wrong dimensionality
+array([[11.97839948, 18.09931636, 15.48014805]])
+>>> predict([1, 3, 5])  # And correct dimensionality
+array([14.79227209, 15.59786987, 15.54316282])
 ```
 
-**While the following will output the correct prediction:**
-```python
->>> predict([0.5])
-array([9.99955335e-01, 4.46511006e-05, 1.41283159e-08, 1.75172056e-17])
-```
-
-**And if trying a batch prediction with classes and `softmax`, the model fails completely:**
+**If trying a batch prediction with classes and `softmax`, the model fails completely:**
 ```python
 >>> predict([[0.5], [0.5]])
 array([[0.5, 0.5, 0.5, 0.5],

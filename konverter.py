@@ -41,7 +41,10 @@ class Konverter:
 
       activation = layer.activation
       if activation != 'linear':
-        model_builder['model'].append(f'l{idx} = {activation}(l{idx})')
+        if activation == 'tanh':
+          model_builder['model'].append(f'l{idx} = np.tanh(l{idx})')
+        else:
+          model_builder['model'].append(f'l{idx} = {activation}(l{idx})')
 
       if activation in self.activation_functions.activations:
         act_str = self.activation_functions.activations[activation]

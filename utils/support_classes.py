@@ -2,6 +2,7 @@ class SupportedAttrs:
   activations = {'keras.activations.relu': 'relu',
                  'keras.activations.sigmoid': 'sigmoid',
                  'keras.activations.softmax': 'softmax',
+                 'keras.activations.tanh': 'tanh',
                  'keras.activations.linear': 'linear'}
   layers = {'keras.layers.Dense': 'dense'}
   models = ['sequential']
