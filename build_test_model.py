@@ -7,11 +7,15 @@ x_train = np.array([[np.random.uniform(0, 20)] for _ in range(2000)])
 y_train = ((np.log2(((((x_train + 5.4) * 1.2905) - 1.94) ** 2)) - 2.5) ** .09) ** x_train
 
 model = Sequential()
-model.add(Dense(128, input_shape=x_train.shape[1:], activation='relu'))  # needlessly large model for benchmark
+model.add(Dense(512, input_shape=x_train.shape[1:], activation='relu'))  # needlessly large model for benchmark
+model.add(Dense(512, activation='relu'))
+model.add(Dense(256, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dense(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(16, activation='relu'))
-model.add(Dense(8, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(64, activation='relu'))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')

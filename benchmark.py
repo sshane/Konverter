@@ -10,6 +10,7 @@ model = keras.models.load_model('{}/dense_model.h5'.format(BASEDIR))
 Konverter(model, model_name='dense_model', output_file='generated.py', tab_spaces=2)  # creates the numpy model from the keras model
 
 samples = np.array([[np.random.uniform(0, 20)] for _ in range(10000)])
+print('samples: {}\n'.format(len(samples)))
 
 t = time.time()
 model.predict(samples)
@@ -36,6 +37,6 @@ print('Konverted model single prediction time: {}s'.format(round(time.time() - t
 
 mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
 mse = np.mean((np.array(keras_preds) - np.array(konverter_preds))**2)
-print('\nkeras vs. konverted model:')
+print('\nkeras vs. konverted model (comparing models, lower is better):')
 print('Mean absolute error for {} predictions: {}'.format(len(samples), mae))
 print('Mean squared error for {} predictions: {}'.format(len(samples), mse))

@@ -23,13 +23,15 @@ The following are guaranteed to work (2D data might work but is untested at this
 
 Benchmark (see exact model in [build_test_model.py](build_test_model.py)):
 ```
-    Keras model batch prediction time: 0.425096s
-    Konverted model batch prediction time: 0.029006s
+    samples: 10000
+
+    Keras model batch prediction time: 0.451137s
+    Konverted model batch prediction time: 0.298853s
     -----
-    Keras model single prediction time: 147.580526s
-    Konverted model single prediction time: 0.248865s
+    Keras model single prediction time: 149.628608s
+    Konverted model single prediction time: 3.352782s
     
-    keras vs. konverted model:
-    Mean absolute error for 10000 predictions: 9.545292139046203e-07
-    Mean squared error for 10000 predictions: 3.000984240332397e-12
+    keras vs. konverted model (comparing models, lower is better):
+    Mean absolute error for 10000 predictions: 9.013858662641816e-07
+    Mean squared error for 10000 predictions: 3.054752549391908e-12
 ```
