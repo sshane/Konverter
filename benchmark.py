@@ -1,15 +1,16 @@
 from utils.BASEDIR import BASEDIR
 import numpy as np
 import time
+import os
 from tensorflow import keras
 from konverter import Konverter
-from generated import predict
+from examples.dense_model import predict
 
+os.chdir(BASEDIR)
+model = keras.models.load_model('examples/dense_model.h5')
+Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
 
-model = keras.models.load_model('{}/dense_model.h5'.format(BASEDIR))
-Konverter(model, model_name='dense_model', output_file='generated.py', tab_spaces=2)  # creates the numpy model from the keras model
-
-samples = np.array([[np.random.uniform(0, 20)] for _ in range(10000)])
+samples = np.array([[np.random.uniform(0, 20)] for _ in range(500)])
 print('samples: {}\n'.format(len(samples)))
 
 t = time.time()

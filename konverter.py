@@ -1,76 +1,83 @@
 import numpy as np
 from utils.BASEDIR import BASEDIR
 from tensorflow import keras
-from utils.support_classes import SupportedAttrs, LayerInfo, ActivationStrings
+from utils.support_classes import SupportedAttrs, LayerInfo, ActivationFunctions
+import json
+import pickle
+import os
 
 
 class Konverter:
-  def __init__(self, model, model_name, output_file, tab_spaces):
+  def __init__(self, model, output_file, tab_spaces):
     self.supported = SupportedAttrs()
-    self.activation_strings = ActivationStrings()
+    self.activation_functions = ActivationFunctions()
 
     self.model = model
-    self.model_name = model_name
-    self.output_file = output_file
-    self.tab_spaces = tab_spaces
+    self.output_file = os.path.join(BASEDIR, output_file)
+    self.tab = ' ' * tab_spaces
 
     self.layers = []
     self.watermark = '"""\n  Generated using Konverter: https://github.com/ShaneSmiskol/Konverter\n"""\n\n'
     self.is_model()
 
     self.get_layers()
+    self.print_model_architecture()
     self.build_konverted_model()
 
   def build_konverted_model(self):
-    tab = ' ' * self.tab_spaces
     self.message('Now building pure Python + NumPy model...')
 
-    imports = ['import numpy as np']
-    activations = []
-    for activation_string in set(filter(None, [getattr(self.activation_strings, layer.activation, None) for layer in self.layers])):
-      if activation_string is not None:
-        activations.append(activation_string.replace('\n', f'\n{tab}'))
+    model_builder = {'imports': ['import numpy as np'],
+                     'activations': [],
+                     'load_weights': [],
+                     'model': ['def predict(x):']}
 
-    wb = []
-    model = ['def predict(x):']
+    # add section to load model weights and biases
+    model_builder['load_weights'].append(f'wb = np.load(\'{self.output_file}_weights.npz\', allow_pickle=True)')
+    model_builder['load_weights'].append('w, b = wb[\'wb\']')
+
+    # builds the model and adds needed activation functions
     for idx, layer in enumerate(self.layers):
-      wb.append(f'w{idx} = np.array({layer.weights.tolist()})')
-      wb.append(f'b{idx} = np.array({layer.biases.tolist()})')
-
       prev_layer = 'x' if idx == 0 else f'l{idx - 1}'
-      model.append(f'l{idx} = np.dot({prev_layer}, w{idx}) + b{idx}')
+      model_builder['model'].append(f'l{idx} = np.dot({prev_layer}, w[{idx}]) + b[{idx}]')
 
-      if layer.activation == 'relu':
-        model.append(f'l{idx} = relu(l{idx})')
-    model.append(f'return l{len(self.layers) - 1}')
+      activation = layer.activation
+      if activation != 'linear':
+        model_builder['model'].append(f'l{idx} = {activation}(l{idx})')
 
-    imports = '\n'.join(imports)
-    activations = '\n'.join(activations)
-    wb = '\n'.join(wb)
-    model = f'\n{tab}'.join(model)
+      if activation in self.activation_functions.activations:
+        act_str = self.activation_functions.activations[activation]
+        model_builder['activations'].append(act_str.replace('\n', f'\n{self.tab}'))
 
-    output = self.watermark + '\n\n'.join([imports, wb, activations, model]) + '\n'
-    with open(f'{BASEDIR}/{self.output_file}', 'w') as f:
-      f.write(output)
+    model_builder['model'].append(f'return l{len(self.layers) - 1}')
+    self.save_model(model_builder)
+    self.message('Saved konverted model to {}.py and {}_weights.npz'.format(self.output_file, self.output_file))
 
-    self.message('Saved konverted model to {}/{}'.format(BASEDIR, self.output_file))
+  def save_model(self, model_builder):
+    # save weights
+    wb = list(zip(*[[np.array(layer.weights), np.array(layer.biases)] for layer in self.layers]))
+    np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
+    # save model loader/predictor
+    output = [model_builder['imports'], model_builder['load_weights'], set(model_builder['activations'])]
+    output = ['\n'.join(section) for section in output] + [f'\n{self.tab}'.join(model_builder['model'])]
+    with open(f'{self.output_file}.py', 'w') as f:
+      f.write(self.watermark + '\n\n'.join(output) + '\n')
 
   def print_model_architecture(self):
     self.message('Successfully got model architecture!\n')
     print('Layers:\n-----')
     to_print = []
     for layer in self.layers:
-      to_print.append('  ' + '\n  '.join([f'name: {layer.name}', f'nodes: {layer.weights.shape[1]}', f'activation: {layer.activation}']))
+      to_print.append('  ' + '\n  '.join([f'name: {layer.name}', f'shape: {layer.weights.shape}', f'activation: {layer.activation}']))
     print('\n-----\n'.join(to_print))
 
   def get_layers(self):
     for layer in self.model.layers:
-      layer_info = self.get_layer_info(layer)
-      if layer_info.supported:
-        self.layers.append(layer_info)
+      layer = self.get_layer_info(layer)
+      if layer.supported:
+        self.layers.append(layer)
       else:
-        raise Exception('Layer {} not currently supported (check type or activation)'.format(layer_info.name))
-    self.print_model_architecture()
+        raise Exception('Layer `{}` with activation `{}` not currently supported (check type or activation)'.format(layer.name, layer.activation))
 
   def get_layer_info(self, layer):
     layer_info = LayerInfo()
@@ -106,5 +113,5 @@ class Konverter:
 
 
 if __name__ == '__main__':
-  model = keras.models.load_model('{}/dense_model.h5'.format(BASEDIR))
-  konverter = Konverter(model, model_name='dense_model', output_file='generated.py', tab_spaces=2)
+  model = keras.models.load_model('{}/examples/dense_model.h5'.format(BASEDIR))
+  konverter = Konverter(model, output_file='examples/dense_model', tab_spaces=2)

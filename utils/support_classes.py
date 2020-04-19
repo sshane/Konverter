@@ -12,5 +12,5 @@ class LayerInfo:
   biases = None
 
 
-class ActivationStrings:
-  relu = 'def relu(x):\nreturn np.maximum(0, x)'
+class ActivationFunctions:
+  activations = {'relu': 'def relu(x):\nreturn np.maximum(0, x)'}
