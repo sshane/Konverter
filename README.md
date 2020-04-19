@@ -21,7 +21,7 @@ The following are guaranteed to work (2D data might work but is untested at this
   - Output data shape:
     1. 1-dimensional output samples, eg. `y_train = np.array([1, 2, 3])`
 
-Benchmark (see exact model in [build_test_model.py](0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
+Benchmark (see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
 ```
     samples: 10000
 
