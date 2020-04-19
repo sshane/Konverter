@@ -14,12 +14,14 @@ This tool is a work in progress, currently only the following are supported:
     1. ReLU
     2. Linear
 
-The following are guaranteed to work (2D data might work but is untested at this early stage):
+The following are guaranteed to work (pretty much anything you can do with dense):
 
   - Input data shape:
-    1. 1-dimensional input samples, eg. `x_train = np.array([[1], [2], [3]])`
+    1. 1-dimensional samples, eg. `x_train = np.array([[1], [2], [3]])`
+    2. 2-dimensional samples, eg. `x_train = np.array([[1, 2], [2, 3], [3, 4]])`
   - Output data shape:
-    1. 1-dimensional output samples, eg. `y_train = np.array([1, 2, 3])`
+    1. 1-dimensional samples, eg. `y_train = np.array([1, 2, 3])`
+    2. 2-dimensional samples, eg. `y_train = np.array([[1, 2], [3, 4], [5, 6]])`
 
 Benchmark (see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
 ```
