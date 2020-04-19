@@ -12,7 +12,9 @@ This tool is a work in progress, currently only the following are supported:
     1. Dense
   - Activations:
     1. ReLU
-    2. Linear
+    2. Sigmoid
+    3. Softmax
+    4. Linear
 
 The following data shapes are guaranteed to work (pretty much anything you can do with dense):
 
