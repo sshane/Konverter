@@ -79,18 +79,23 @@ class Konverter:
 
   def get_layer_info(self, layer):
     layer_info = LayerInfo()
-    layer_name = getattr(layer, '_keras_api_names') + (layer.name,)
-    name_exists = [idx for idx, name in enumerate(layer_name) if name in self.supported.layers]
-    if len(name_exists) > 0:
-      layer_info.name = self.supported.layers[layer_name[name_exists[0]]]
 
-    layer_activation = getattr(layer.activation, '_keras_api_names')
+    name = getattr(layer, '_keras_api_names')[0]  # assume only 1 name
+    if name in self.supported.layers:
+      layer_info.name = self.supported.layers[name]
+    else:
+      layer_info.name = name[0]
 
-    if len(layer_activation) == 1:
-      if layer_activation[0] in self.supported.activations:
-        layer_info.activation = self.supported.activations[layer_activation[0]]
+    activation = getattr(layer.activation, '_keras_api_names')
+    if len(activation) == 1:
+      if activation[0] in self.supported.activations:
+        layer_info.activation = self.supported.activations[activation[0]]
+      else:
+        layer_info.activation = activation[0]
+    else:
+      raise Exception('Multiple activations?')
 
-    if None not in [layer_info.name, layer_info.activation]:
+    if layer_info.name in self.supported.layers.values() and layer_info.activation in self.supported.activations.values():
       layer_info.supported = True
     else:
       return layer_info
