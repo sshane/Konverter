@@ -23,7 +23,9 @@ The following are guaranteed to work (pretty much anything you can do with dense
     1. 1-dimensional samples, eg. `y_train = np.array([1, 2, 3])`
     2. 2-dimensional samples, eg. `y_train = np.array([[1, 2], [3, 4], [5, 6]])`
 
-Benchmark (see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
+Benchmark:
+---
+(see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
 ```
     samples: 10000
 
@@ -37,3 +39,11 @@ Benchmark (see exact model in [build_test_model.py](https://github.com/ShaneSmis
     Mean absolute error for 10000 predictions: 9.013858662641816e-07
     Mean squared error for 10000 predictions: 3.054752549391908e-12
 ```
+
+Benchmark info:
+---
+The batch predictions are simply that, 10,000 random samples are fed into each model to be predicted on all at once. This is usually the fastest method of executing a prediction for a lot of unrelated samples.
+
+With the single predictions, we are predicting on the same samples as before, however we are using a loop and predicting on each sample one by one. This is usually how you will be executing predictions in production. You won't know future data, so this is a good way to benchmark inference times for both model formats.
+
+The errors at the end of the benchmark are the mean absolute error (`np.mean(np.abs(keras_preds - konverter_preds))`) and mean squared error (`np.mean((keras_preds - konverter_preds) ** 2)`) which are two common methods of measuring prediction vs. ground truth error. 3.05e-12 for MSE essentially means the two model formats are predicting the same outputs up to an accuracy of ~12 decimal places (correct me if I'm wrong) over 10,000 predictions.
