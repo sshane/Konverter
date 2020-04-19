@@ -1,7 +1,6 @@
 # Konverter
 ### A tool to convert Keras models to a single file using only NumPy.
 
----
 The goal of this tool is to provide a quick and easy way to execute simple Keras models on machines or setups where utilizing TensorFlow/Keras is impossible. Specifically, in my case, to replace SNPE (Snapdragon Neural Processing Engine) for inference on phones with Python.
 
 ---
