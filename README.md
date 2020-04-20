@@ -22,11 +22,24 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 - [ ] LSTM
 - [ ] Conv2D
 
+## Features
+- Super quick conversion of your models. Takes less than a second.
+- Usually reduces the size of Keras models by about 69.37%.
+- Prediction is usually quicker in most cases than Keras or SNPE.
+- Stores the weights and biases of your model in a separate compressed NumPy file.
+  - If your model output name is `dense_model`, the Python wrapper file will be named `dense_model.py` and the weights will be named `dense_model_weights.npz` in the same directory.
+
 ## Benchmarks
 [Benchmarks can be found here in the BENCHMARKS.md file.](BENCHMARKS.md)
 
 ## Usage
 To be added.
+
+## Requirements
+I've built and tested Konverter with the following:
+- TensorFlow 2.1.0
+- tf.keras (not keras)
+- Python >= 3.6 (for the glorious f-strings!)
 
 ## Current Limitations and Issues
 - Dimensionality of input data:

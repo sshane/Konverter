@@ -15,9 +15,9 @@ y_train = (((x_train.take(axis=1, indices=0) + 2.9) / 2.4) + 1) ** 2
 
 model = Sequential()
 # model.add(GRU(256, input_shape=x_train.shape[1:]))
-model.add(Dense(204, activation='relu', input_shape=x_train.shape[1:]))
-model.add(Dense(128, activation='relu'))
-model.add(Dense(64, activation='relu'))
+model.add(Dense(1024, activation='relu', input_shape=x_train.shape[1:]))
+model.add(Dense(512, activation='relu'))
+model.add(Dense(256, activation='relu'))
 # model.add(Dense(32, activation='relu'))
 model.add(Dense(1, activation='linear'))
 
