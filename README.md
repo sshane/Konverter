@@ -10,6 +10,8 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - Dense
   - Dropout
     - Will be ignored during inference (SNPE 1.19 does NOT support dropout with Keras!)
+  - SimpleRNN
+    - Batch predictions do not currently work correctly.
 - Activations:
   - ReLU
   - Sigmoid
@@ -20,7 +22,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - Pretty much anything you can do with dense layers, Konverter supports. 1D/2D input? Check. 1D/2D output? Check.
 
 **Todo**:
-- [ ] SimpleRNN
+- [x] SimpleRNN
 - [ ] GRU
 - [ ] LSTM
 - [ ] Conv2D
