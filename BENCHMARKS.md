@@ -1,8 +1,6 @@
-# Konverter
-## Benchmarks
+# Konverter Benchmarks
 
----
-### Snapdragon 821 (LeEco Le Pro3) - 10,000 random single predictions
+## Snapdragon 821 (LeEco Le Pro3) - 10,000 random single predictions
 
 |              |   SNPE model   | Konverted model |
 | ------------ | -------------- | --------------- |
@@ -23,16 +21,16 @@ model.add(Dense(1, activation='linear'))
 ```
 
 ---
-### Ryzen 5 3600 (Desktop) - 10,000 random predictions
+## Ryzen 5 3600 (Desktop) - 10,000 random predictions
 (see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
 
-#### Batch prediction:
+### Batch prediction:
 
 |              | Keras model    | Konverted model |
 | ------------ | -------------- | --------------- |
 | Total time   | 0.403091 sec.  | 0.088019 sec.   |
 
-#### Single prediction:
+### Single prediction:
 
 |              | Keras model     | Konverted model |
 | ------------ | --------------- | --------------- |
@@ -41,7 +39,7 @@ model.add(Dense(1, activation='linear'))
 | Model rate   | 74.0334593 Hz   | 5410.043 Hz     |
 
 ---
-### Benchmark info:
+## Benchmark info:
 
 The batch predictions are simply that, 10,000 random samples are fed into each model to be predicted on all at once. This is usually the fastest method of executing a prediction for a lot of unrelated samples.
 
