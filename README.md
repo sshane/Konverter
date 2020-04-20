@@ -35,9 +35,9 @@ To be added.
   ```python
   >>> model.predict([[1, 3, 5]])  # keras model
   array([[14.792273, 15.59787 , 15.543163]])
-  >>> predict([[1, 3, 5]])  # Konverted model, wrong dimensionality
+  >>> predict([[1, 3, 5]])  # Konverted model, wrong output
   array([[11.97839948, 18.09931636, 15.48014805]])
-  >>> predict([1, 3, 5])  # And correct dimensionality
+  >>> predict([1, 3, 5])  # And correct output
   array([14.79227209, 15.59786987, 15.54316282])
   ```
 
