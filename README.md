@@ -20,6 +20,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - Pretty much anything you can do with dense layers, Konverter supports. 1D/2D input? Check. 1D/2D output? Check.
 
 **Todo**:
+- [ ] SimpleRNN
 - [ ] GRU
 - [ ] LSTM
 - [ ] Conv2D
