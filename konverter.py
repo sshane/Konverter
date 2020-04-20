@@ -37,7 +37,7 @@ class Konverter:
     print('\nNow building pure Python + NumPy model...')
 
     model_builder = {'imports': ['import numpy as np'],
-                     'activations': [],
+                     'functions': [],
                      'load_weights': [],
                      'model': ['def predict(x):']}
 
@@ -47,19 +47,30 @@ class Konverter:
 
     # builds the model and adds needed activation functions
     for idx, layer in enumerate(self.layers):
-      prev_layer = 'x' if idx == 0 else f'l{idx - 1}'
-      model_builder['model'].append(f'l{idx} = np.dot({prev_layer}, w[{idx}]) + b[{idx}]')
+      prev_layer = self.layers[idx - 1] if idx > 0 else LayerInfo()
+      prev_output = 'x' if idx == 0 else f'l{idx - 1}'
 
-      if layer.has_activation:  # todo: check unneeded for now, since dropout is removed before this
+      if layer.name == aliases.layers.dense:
+        model_builder['model'].append(f'l{idx} = np.dot({prev_output}, w[{idx}]) + b[{idx}]')
         if layer.activation != aliases.activations.linear:
           activation = layer.activation.split('.')[-1].lower()
           model_builder['model'].append(f'l{idx} = {activation}(l{idx})')
+      elif layer.is_recurrent:
+        rnn_function = f'l{idx} = simplernn({prev_output}, {idx})'
+        if not layer.returns_sequences:
+          rnn_function += '[-1]'
+        model_builder['model'].append(rnn_function)
 
+      if layer.has_activation:  # todo: check unneeded for now, since dropout is removed before this
         if layer.activation in attr_strings.activations:
           act_str = attr_strings.activations[layer.activation]
-          model_builder['activations'].append(act_str.replace('\n', f'\n{self.indent}'))
+          model_builder['functions'].append(act_str)
 
-    model_builder['activations'] = set(model_builder['activations'])  # remove duplicates
+        if layer.is_recurrent:
+          lyr_str = attr_strings.layers[layer.name]
+          model_builder['functions'].append(lyr_str)
+
+    model_builder['functions'] = set(model_builder['functions'])  # remove duplicates
     model_builder['model'].append(f'return l{len(self.layers) - 1}')
     self.save_model(model_builder)
     print('\nSaved Konverted model!')
@@ -68,15 +79,19 @@ class Konverter:
     print('\nMake sure to change the path inside the wrapper file to your weights if you move the file elsewhere.')
 
   def save_model(self, model_builder):
-    # save weights
     wb = list(zip(*[[np.array(layer.weights), np.array(layer.biases)] for layer in self.layers]))
     np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
-    # save model loader/predictor
-    output = [model_builder['imports'], model_builder['load_weights'], model_builder['activations']]
-    output = ['\n'.join(section) for section in output] + [f'\n{self.indent}'.join(model_builder['model'])]
+
+    output = ['\n'.join(model_builder['imports']),
+              '\n'.join(model_builder['load_weights']),
+              '\n\n'.join(model_builder['functions']),
+              '\n\t'.join(model_builder['model'])]
     output = '\n\n'.join(output) + '\n'  # combine all sections
+
     if self.use_watermark:
       output = watermark + output
+
+    output = output.replace('\t', self.indent)
     with open(f'{self.output_file}.py', 'w') as f:
       f.write(output)
 
@@ -93,9 +108,14 @@ class Konverter:
     to_print = [[] for _ in range(len(self.layers))]
     for idx, layer in enumerate(self.layers):
       to_print[idx].append(f'name: {layer.name}')
-      if layer.has_activation:
-        to_print[idx].append(f'shape: {layer.weights.shape}')
+      if layer.has_activation and not layer.is_ignored:
         to_print[idx].append(f'activation: {layer.activation}')
+      if layer.name not in supported.ignored_layers:
+        if layer.is_recurrent:
+          to_print[idx].append(f'shape: {layer.weights[0].shape}')
+        else:
+          to_print[idx].append(f'shape: {layer.weights.shape}')
+
       to_print[idx] = '  ' + '\n  '.join(to_print[idx])
     print('\n-----\n'.join(to_print))
 
@@ -110,6 +130,7 @@ class Konverter:
   def get_layer_info(self, layer):
     layer_info = LayerInfo()
     layer_info.name = getattr(layer, '_keras_api_names_v1')[0]  # assume only 1 name
+    layer_info.is_ignored = layer_info.name in supported.ignored_layers
 
     if layer_info.name not in supported.layers_without_activations:
       layer_info.has_activation = True
@@ -123,13 +144,22 @@ class Konverter:
       if layer_info.has_activation:
         if layer_info.activation in supported.activations:
           layer_info.supported = True
-      else:  # skip activation check if layer has no activation (eg. dropout)
+      elif layer_info.is_ignored:  # skip activation check if layer has no activation (eg. dropout)
         layer_info.supported = True
 
     if not layer_info.supported or not layer_info.has_activation:
       return layer_info
 
-    weights, biases = layer.get_weights()
+    wb = layer.get_weights()
+    if len(wb) == 2:
+      weights, biases = wb
+    elif len(wb) == 3 and layer_info.name in supported.recurrent_layers:
+      *weights, biases = layer.get_weights()
+      layer_info.returns_sequences = layer.return_sequences
+      layer_info.is_recurrent = True
+    else:
+      raise Exception('Layer `{}` had an unsupported number of weights: {}'.format(layer_info.name, len(wb)))
+
     layer_info.weights = np.array(weights)
     layer_info.biases = np.array(biases)
     return layer_info

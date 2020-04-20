@@ -10,7 +10,7 @@ os.chdir(BASEDIR)
 model = keras.models.load_model('examples/dense_model.h5')
 # Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
 
-samples = np.random.rand(100, 40)
+samples = np.random.uniform(0, 10, (1000, 5, 1)).astype('float32')
 print('samples: {}\n'.format(len(samples)))
 
 t = time.time()
@@ -26,13 +26,13 @@ print('-----')
 t = time.time()
 keras_preds = []
 for i in samples:
-  keras_preds.append(model.predict([[i]])[0])
+  keras_preds.append(model.predict([[i]])[0][0])
 print('Keras model single prediction time: {}s'.format(round(time.time() - t, 6)))
 
 t = time.time()
 konverter_preds = []
 for i in samples:
-  konverter_preds.append(predict([i])[0])
+  konverter_preds.append(predict(i)[0])
 print('Konverted model single prediction time: {}s'.format(round(time.time() - t, 6)))
 
 

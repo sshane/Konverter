@@ -11,19 +11,18 @@ x_train = np.random.uniform(0, 10, (samples, 5, 1))
 y_train = (x_train.take(axis=1, indices=4).take(axis=1, indices=0) * 2)
 # y_train = (((x_train.take(axis=1, indices=0) + 2.9) / 2.4) + 1) ** 2
 
-
-
 model = Sequential()
 # model.add(GRU(256, input_shape=x_train.shape[1:]))
-model.add(SimpleRNN(8, input_shape=x_train.shape[1:], return_sequences=True))
-model.add(SimpleRNN(4))
-# model.add(Dense(128, activation='relu'))
-# model.add(Dense(64, activation='relu'))
+model.add(SimpleRNN(128, input_shape=x_train.shape[1:], return_sequences=True))
+model.add(SimpleRNN(64, return_sequences=True))
+model.add(SimpleRNN(32))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(8, activation='relu'))
 # model.add(Dense(32, activation='relu'))
 model.add(Dense(1, activation='linear'))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit(x_train, y_train, batch_size=8, epochs=10, verbose=1, validation_split=0.2)
+model.fit(x_train, y_train, batch_size=32, epochs=10, verbose=1, validation_split=0.2)
 model.save('{}/examples/dense_model.h5'.format(BASEDIR))
 print(model.predict([[[1], [1], [2], [3], [4]]]))
 print('Saved!')
