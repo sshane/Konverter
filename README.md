@@ -37,6 +37,9 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 ## Usage
 To be added.
 
+![Alt Text](gifs/konverter.gif)
+
+
 ## Requirements
 I've built and tested Konverter with the following:
 - TensorFlow 2.1.0
