@@ -8,6 +8,8 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - Sequential
 - Layers:
   - Dense
+  - Dropout
+    - Will be ignored during inference (SNPE does NOT support dropout with Keras!)
 - Activations:
   - ReLU
   - Sigmoid
@@ -30,7 +32,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - If your model output name is `dense_model`, the Python wrapper file will be named `dense_model.py` and the weights will be named `dense_model_weights.npz` in the same directory.
 
 ## Benchmarks
-Benchmarks can be found here in [BENCHMARKS.md](BENCHMARKS.md).
+Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 
 ## Usage
 To be added.
