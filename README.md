@@ -49,27 +49,3 @@ array([[0.5, 0.5, 0.5, 0.5],
 
 **Always double check that predictions are working correctly before deploying the model.**
 
-Benchmark:
----
-(see exact model in [build_test_model.py](https://github.com/ShaneSmiskol/Konverter/blob/0150ae6f22404521c9ff77f36a0047d7a95cbeb8/build_test_model.py)):
-```
-samples: 10000
-
-Keras model batch prediction time: 0.403091s
-Konverted model batch prediction time: 0.088019s
------
-Keras model single prediction time: 135.074061s
-Konverted model single prediction time: 1.848414s
-
-keras vs. konverted model (comparing models, lower is better):
-Mean absolute error for 10000 predictions: 3.1964721917692176e-06
-Mean squared error for 10000 predictions: 1.7394346827259016e-11
-```
-
-Benchmark info:
----
-The batch predictions are simply that, 10,000 random samples are fed into each model to be predicted on all at once. This is usually the fastest method of executing a prediction for a lot of unrelated samples.
-
-With the single predictions, we are predicting on the same samples as before, however we are using a loop and predicting on each sample one by one. This is usually how you will be executing predictions in production. You won't know future data, so this is a good way to benchmark inference times for both model formats.
-
-The errors at the end of the benchmark are the mean absolute error (`np.mean(np.abs(keras_preds - konverter_preds))`) and mean squared error (`np.mean((keras_preds - konverter_preds) ** 2)`) which are two common methods of measuring prediction vs. ground truth error. 1.77e-11 for MSE essentially means the two model formats are predicting the same outputs up to an accuracy of ~11 decimal places (correct me if I'm wrong) over 10,000 predictions.
