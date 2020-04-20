@@ -10,7 +10,7 @@ os.chdir(BASEDIR)
 model = keras.models.load_model('examples/dense_model.h5')
 # Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
 
-samples = np.array([[np.random.uniform(0, 20), np.random.uniform(0, 20), np.random.uniform(0, 20)] for _ in range(10000)])
+samples = np.random.rand(100, 40)
 print('samples: {}\n'.format(len(samples)))
 
 t = time.time()

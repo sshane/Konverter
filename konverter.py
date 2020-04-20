@@ -90,7 +90,7 @@ class Konverter:
 
   def get_layer_info(self, layer):
     layer_info = LayerInfo()
-    layer_info.name = getattr(layer, '_keras_api_names')[0]  # assume only 1 name
+    layer_info.name = getattr(layer, '_keras_api_names_v1')[0]  # assume only 1 name
 
     if layer_info.name not in supported.layers_without_activations:
       layer_info.has_activation = True
