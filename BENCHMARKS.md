@@ -4,8 +4,8 @@
 
 |              |   SNPE model   | Konverted model |
 | ------------ | -------------- | --------------- |
-| Total time   | 16.150222 sec. | 10.021809s sec. |
-| Average time | 0.0016150 sec. | 0.0010022s sec. |
+| Total time   | 16.150222 sec. | 10.021809 sec.  |
+| Average time | 0.0016150 sec. | 0.0010022 sec.  |
 | Model rate   | 619.18654 Hz   | 997.82385 Hz    |
 
 Comparison of a model converted with SNPE (Snapdragon Neural Processing Engine) and the same model converted with Konverter.
