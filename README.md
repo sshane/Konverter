@@ -37,8 +37,7 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 ## Usage
 To be added.
 
-![Alt Text](gifs/konverter.gif height="100")
-<img src="gifs/konverter.gif" width="200" height="400" />
+<img src="gifs/konverter.gif" height="800" />
 
 
 ## Requirements
