@@ -9,7 +9,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 - Layers:
   - Dense
   - Dropout
-    - Will be ignored during inference (SNPE does NOT support dropout with Keras!)
+    - Will be ignored during inference (SNPE 1.19 does NOT support dropout with Keras!)
 - Activations:
   - ReLU
   - Sigmoid

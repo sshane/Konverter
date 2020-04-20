@@ -1,7 +1,7 @@
 # Konverter Benchmarks
 
 ## Snapdragon 821 (LeEco Le Pro3) - 10,000 random single predictions
-Comparison of a model converted with SNPE (Snapdragon Neural Processing Engine) and the same model converted with Konverter.
+Comparison of a model converted with SNPE 1.19 (Snapdragon Neural Processing Engine) and the same model converted with Konverter.
 
 |              |   SNPE model   | Konverted model |
 | ------------ | -------------- | --------------- |
