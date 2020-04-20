@@ -42,3 +42,6 @@ class AttrStrings:
                  Aliases.activations.sigmoid: 'def sigmoid(x):\nreturn 1 / (1 + np.exp(-x))',
                  Aliases.activations.softmax: 'def softmax(x):\nreturn np.exp(x) / np.sum(np.exp(x), axis=0)',
                  Aliases.activations.tanh: 'def tanh(x):\nreturn np.tanh(x)'}
+
+
+watermark = '"""\n  Generated using Konverter: https://github.com/ShaneSmiskol/Konverter\n"""\n\n'

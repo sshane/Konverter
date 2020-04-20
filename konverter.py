@@ -1,7 +1,7 @@
 import numpy as np
 from utils.BASEDIR import BASEDIR
 from tensorflow import keras
-from utils.support_classes import SupportedAttrs, LayerInfo, AttrStrings, Aliases
+from utils.support import SupportedAttrs, LayerInfo, AttrStrings, Aliases, watermark
 import os
 
 supported = SupportedAttrs()
@@ -10,22 +10,31 @@ aliases = Aliases()
 
 
 class Konverter:
-  def __init__(self, model, output_file, tab_spaces):
+  def __init__(self, model, output_file, indent_spaces, use_watermark=True):
+    """
+    :param model: A preloaded Sequential Keras model
+    :param output_file: The desired path and name of the output model files
+    :param indent_spaces: The number of spaces to use for indentation
+    :param use_watermark: To prepend a watermark comment to model wrapper
+    """
     self.model = model
     self.output_file = os.path.join(BASEDIR, output_file)
-    self.tab = ' ' * tab_spaces
+    self.indent = ' ' * indent_spaces
+    self.use_watermark = use_watermark
 
     self.layers = []
-    self.watermark = '"""\n  Generated using Konverter: https://github.com/ShaneSmiskol/Konverter\n"""\n\n'
-    self.is_model()
+    self.start()
 
+  def start(self):
+    self.is_model()
+    self.parse_output_file()
     self.get_layers()
     self.print_model_architecture()
     self.delete_unused_layers()
     self.build_konverted_model()
 
   def build_konverted_model(self):
-    self.message('Now building pure Python + NumPy model...')
+    print('\nNow building pure Python + NumPy model...')
 
     model_builder = {'imports': ['import numpy as np'],
                      'activations': [],
@@ -48,12 +57,15 @@ class Konverter:
 
         if layer.activation in attr_strings.activations:
           act_str = attr_strings.activations[layer.activation]
-          model_builder['activations'].append(act_str.replace('\n', f'\n{self.tab}'))
+          model_builder['activations'].append(act_str.replace('\n', f'\n{self.indent}'))
 
     model_builder['activations'] = set(model_builder['activations'])  # remove duplicates
     model_builder['model'].append(f'return l{len(self.layers) - 1}')
     self.save_model(model_builder)
-    self.message('Saved konverted model to {}.py and {}_weights.npz'.format(self.output_file, self.output_file))
+    print('\nSaved Konverted model!')
+    self.output_file = self.output_file.replace('\\', '/')
+    print(f'Model wrapper: {self.output_file}.py\nWeights and biases file: {self.output_file}_weights.npz')
+    print('\nMake sure to change the path inside the wrapper file to your weights if you move the file elsewhere.')
 
   def save_model(self, model_builder):
     # save weights
@@ -61,15 +73,22 @@ class Konverter:
     np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
     # save model loader/predictor
     output = [model_builder['imports'], model_builder['load_weights'], model_builder['activations']]
-    output = ['\n'.join(section) for section in output] + [f'\n{self.tab}'.join(model_builder['model'])]
+    output = ['\n'.join(section) for section in output] + [f'\n{self.indent}'.join(model_builder['model'])]
+    output = '\n\n'.join(output) + '\n'  # combine all sections
+    if self.use_watermark:
+      output = watermark + output
     with open(f'{self.output_file}.py', 'w') as f:
-      f.write(self.watermark + '\n\n'.join(output) + '\n')
+      f.write(output)
 
   def delete_unused_layers(self):
     self.layers = [layer for layer in self.layers if layer.name not in supported.layers_without_activations]
 
+  def parse_output_file(self):
+    if self.output_file[-3:] == '.py':
+      self.output_file = self.output_file[:-3]
+
   def print_model_architecture(self):
-    self.message('Successfully got model architecture!\n')
+    print('\nSuccessfully got model architecture!\n')
     print('Layers:\n-----')
     to_print = [[] for _ in range(len(self.layers))]
     for idx, layer in enumerate(self.layers):
@@ -115,16 +134,13 @@ class Konverter:
     layer_info.biases = np.array(biases)
     return layer_info
 
-  def message(self, msg):
-    print(f'\n- {msg}')
-
   def is_model(self):
     if str(type(self.model)) != "<class 'tensorflow.python.keras.engine.sequential.Sequential'>":
-      raise Exception('Input for `model` must be a tf.keras model, not {}'.format(type(self.model)))
+      raise Exception('Input for `model` must be a Sequential tf.keras model, not {}'.format(type(self.model)))
     elif self.model.name not in supported.models:
       raise Exception('Model is `{}`, must be in {}'.format(self.model.name, supported.models))
 
 
 if __name__ == '__main__':
   model = keras.models.load_model('{}/examples/dense_model.h5'.format(BASEDIR))
-  konverter = Konverter(model, output_file='examples/dense_model', tab_spaces=2)
+  konverter = Konverter(model, output_file='examples/dense_model.py', indent_spaces=2)
