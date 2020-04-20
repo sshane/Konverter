@@ -14,9 +14,6 @@ class Aliases:
     linear = 'keras.activations.linear'
 
 
-aliases = Aliases()
-
-
 class SupportedAttrs:
   models = ['sequential']
 

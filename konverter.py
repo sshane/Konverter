@@ -1,11 +1,12 @@
 import numpy as np
 from utils.BASEDIR import BASEDIR
 from tensorflow import keras
-from utils.support_classes import SupportedAttrs, LayerInfo, AttrStrings, aliases
+from utils.support_classes import SupportedAttrs, LayerInfo, AttrStrings, Aliases
 import os
 
 supported = SupportedAttrs()
 attr_strings = AttrStrings()
+aliases = Aliases()
 
 
 class Konverter:
