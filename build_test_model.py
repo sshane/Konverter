@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 from utils.BASEDIR import BASEDIR
 
@@ -9,9 +9,13 @@ y_train = (((np.log2(((((x_train + 5.4) * 1.2905) - 1.94) ** 2)) - 2.5) ** .09) 
 
 model = Sequential()
 model.add(Dense(256, input_shape=x_train.shape[1:], activation='tanh'))
+model.add(Dropout(0.2))
 model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.2))
 model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.2))
 model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.2))
 model.add(Dense(3, activation='linear'))
 
 model.compile(optimizer='adam', loss='mse')
