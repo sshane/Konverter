@@ -29,7 +29,8 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 - Stores the weights and biases of your model in a separate compressed NumPy file.
   - If your model output name is `dense_model`, the Python wrapper file will be named `dense_model.py` and the weights will be named `dense_model_weights.npz` in the same directory.
 
-## [Benchmarks](BENCHMARKS.md)
+## [Benchmarks]
+Benchmarks can be found here in [BENCHMARKS.md](BENCHMARKS.md).
 
 ## Usage
 To be added.
