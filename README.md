@@ -21,32 +21,43 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 - Data shapes:
   - Pretty much anything you can do with dense layers, Konverter supports. 1D/2D input? Check. 1D/2D output? Check.
 
-**Todo**:
+### Roadmap:
 - [x] SimpleRNN
 - [ ] GRU
 - [ ] LSTM
 - [ ] Conv2D
+- [ ] Properly support batch predictions
+- [ ] Fix issues with softmax and class-based models
 
 ## Features
 - Super quick conversion of your models. Takes less than a second.
 - Usually reduces the size of Keras models by about 69.37%.
 - Prediction is usually quicker in most cases than Keras or SNPE.
 - Stores the weights and biases of your model in a separate compressed NumPy file.
-  - If your model output name is `dense_model`, the Python wrapper file will be named `dense_model.py` and the weights will be named `dense_model_weights.npz` in the same directory.
 
 ## Benchmarks
 Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 
 ## Usage
-To be added.
+To convert your Keras model, simply edit the last few lines in [konverter.py](konverter.py#L175).
+
+1. For the `model` variable, you'll want to replace the path with the location of your model.
+2. For the `output_file` variable, enter your desired output file name. The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory.
+3. Finally, enter the number of spaces to use as indentation!
+
+That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
+
+To predict: Run `predict()` function in your Python model. Always double check that the outputs closely match your Keras model's.
+
+Nesting your input data with the wrong number of arrays/lists can sometimes cause the outputs to be complete incorrect; you may need to experiment with `[[sample]]` vs. `[sample]` as your input for example.
 
 <img src="examples/gifs/konverter.gif?raw=true" width="913">
 
 
-## Requirements
+## Environment
 I've built and tested Konverter with the following:
 - TensorFlow 2.1.0
-- tf.keras (not keras)
+  - tf.keras models (not keras), but any version of TensorFlow should work
 - Python >= 3.6 (for the glorious f-strings!)
 
 ## Current Limitations and Issues
@@ -69,3 +80,6 @@ I've built and tested Konverter with the following:
   ```
 
   Always double check that predictions are working correctly before deploying the model.
+- Batch prediction with SimpleRNN layers
+
+  Currently, the converted model has no way of determining if you're feeding a single prediction or a batch of predictions, and it will fail to give the correct output. Support will be added soon.
