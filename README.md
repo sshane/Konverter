@@ -21,7 +21,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 - Data shapes:
   - Pretty much anything you can do with dense layers, Konverter supports. 1D/2D input? Check. 1D/2D output? Check.
 
-### Roadmap:
+#### Roadmap:
 - [x] SimpleRNN
 - [ ] GRU
 - [ ] LSTM
@@ -41,16 +41,17 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 ## Usage
 To convert your Keras model, simply edit the last few lines in [konverter.py](konverter.py#L175).
 
-1. For the `model` variable, you'll want to replace the path with the location of your model.
-2. For the `output_file` variable, enter your desired output file name. The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory.
-3. Finally, enter the number of spaces to use as indentation!
+1. For the `model` variable, you'll want to replace the path with the location of your Keras `.h5` model.
+2. For the `output_file` variable, enter your desired output model name. The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory.
+3. Finally, enter the number of spaces to use as indentation and run with `python konverter.py`!
 
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
 To predict: Run `predict()` function in your Python model. Always double check that the outputs closely match your Keras model's.
 
-Nesting your input data with the wrong number of arrays/lists can sometimes cause the outputs to be complete incorrect; you may need to experiment with `[[sample]]` vs. `[sample]` as your input for example.
+Nesting your input data with the wrong number of arrays/lists can sometimes cause the outputs to be complete incorrect; you may need to experiment with `predict[[sample]])` vs. `predict([sample])` for example.
 
+## Demo:
 <img src="examples/gifs/konverter.gif?raw=true" width="913">
 
 
