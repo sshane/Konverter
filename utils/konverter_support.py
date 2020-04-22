@@ -19,10 +19,9 @@ class KonverterSupport:
     :return: A class object of the attribute name, or False if not found/supported
     """
     attrs = getattr(self, attr_type, None)
-    if attrs is not None:
-      for attr_class in attrs:
-        if name == attr_class.name:
-          return attr_class()  # new instance of class
+    for attr_class in attrs:
+      if name == attr_class.name:
+        return attr_class()  # new instance of class
     return False
 
   def in_models(self, name):
