@@ -53,11 +53,11 @@ class Konverter:
         model_line = f'l{idx} = {layer.string.format(prev_output, idx, idx)}'
         model_builder['model'].append(model_line)
         if layer.info.has_activation:
-          if support.is_function(layer.info.activation.string):
-            activation = layer.info.activation.alias.lower()
-          else:  # eg. tanh which is np.tanh()
-            activation = layer.info.activation.string.lower()
-          model_builder['model'].append(f'l{idx} = {activation}(l{idx})')
+          if layer.info.activation.needs_function:
+            activation = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
+          else:  # eg. tanh or relu
+            activation = f'l{idx} = {layer.info.activation.string.lower().format(prev_output)}'
+          model_builder['model'].append(activation)
 
       elif layer.info.is_recurrent:
         rnn_function = f'l{idx} = {layer.alias.lower()}({prev_output}, {idx})'

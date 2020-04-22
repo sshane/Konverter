@@ -13,11 +13,13 @@ class Activations:
     name = None
     alias = None
     string = None
+    needs_function = True
 
   class ReLU(BaseAcivation):
     name = 'keras.activations.relu'
     alias = 'relu'
-    string = 'def relu(x):\n\treturn np.maximum(0, x)'
+    string = 'np.maximum(0, {})'
+    needs_function = False
 
   class Sigmoid(BaseAcivation):
     name = 'keras.activations.sigmoid'
@@ -32,7 +34,9 @@ class Activations:
   class Tanh(BaseAcivation):
     name = 'keras.activations.tanh'
     alias = 'tanh'
-    string = 'np.tanh'  # don't define a function if you don't want your string added to file as a function
+    string = 'np.tanh({})'  # don't define a function if you don't want your string added to file as a function
+    needs_function = False
+
 
   class Linear(BaseAcivation):
     name = 'keras.activations.linear'
