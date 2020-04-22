@@ -2,4 +2,4 @@ package:
 	poetry build
 
 clean:
-	git clean -fxd
+	git clean -fxd --exclude .python-version
