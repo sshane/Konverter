@@ -1,4 +1,4 @@
-from utils.model_attributes import BaseLayerInfo, Models, Activations, Layers
+from konverter.utils.model_attributes import BaseLayerInfo, Models, Activations, Layers
 import numpy as np
 
 
