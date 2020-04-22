@@ -5,79 +5,83 @@ class Models:
 
 class Activations:
   """
-    The class that contains the activations in string format to be used in the output model file.
+    The class that contains the supported activations and any information we will need to generate models
+      ex. activation in string format
     To add new activations, use the code_converter function and add them here!
   """
-  class ReLU:
+  class BaseAcivation:
+    name = None
+    alias = None
+    string = None
+
+  class ReLU(BaseAcivation):
     name = 'keras.activations.relu'
+    alias = 'relu'
     string = 'def relu(x):\n\treturn np.maximum(0, x)'
 
-  class Sigmoid:
+  class Sigmoid(BaseAcivation):
     name = 'keras.activations.sigmoid'
+    alias = 'sigmoid'
     string = 'def sigmoid(x):\n\treturn 1 / (1 + np.exp(-x))'
 
-  class Softmax:
+  class Softmax(BaseAcivation):
     name = 'keras.activations.softmax'
+    alias = 'softmax'
     string = 'def softmax(x):\n\treturn np.exp(x) / np.sum(np.exp(x), axis=0)'
 
-  class Tanh:
+  class Tanh(BaseAcivation):
     name = 'keras.activations.tanh'
-    string = 'def tanh(x):\n\treturn np.tanh(x)'
+    alias = 'tanh'
+    string = 'np.tanh'  # don't define a function if you don't want your string added to file as a function
 
-  class Linear:  # No activation, but is technically not `None`
+  class Linear(BaseAcivation):
     name = 'keras.activations.linear'
-    string = None
+    alias = 'linear'
 
 
 class Layers:
   """
-    The class that contains the layers in string format to be used in the output model file.
+    The class that contains the supported layers and any information we will need to generate models
+      ex. function in string format
     To add new layers, use the code_converter function and add them here!
   """
-  class Dense:
-    name = 'keras.layers.Dense'
-    activations = [Activations.ReLU.name, Activations.Sigmoid.name, Activations.Softmax.name, Activations.Tanh.name, Activations.Linear.name]
-    string = 'to_add'
-
-  class Dropout:
-    name = 'keras.layers.Dropout'
+  class BaseLayer:
+    name = None
+    alias = None
     activations = [None]
     string = None
 
-  class SimpleRNN:
+  class Dense(BaseLayer):
+    name = 'keras.layers.Dense'
+    alias = 'dense'
+    activations = [Activations.ReLU.name, Activations.Sigmoid.name, Activations.Softmax.name, Activations.Tanh.name, Activations.Linear.name]
+    string = 'np.dot({}, w[{}]) + b[{}]'  # n0 is the previous layer, n1 is weight, n2 is bias
+
+  class Dropout(BaseLayer):
+    name = 'keras.layers.Dropout'
+    alias = 'dropout'
+
+  class SimpleRNN(BaseLayer):
     name = 'keras.layers.SimpleRNN'
-    activations = [Activations.Tanh]
+    alias = 'SimpleRNN'
+    activations = [Activations.Tanh.name]
     string = 'def simplernn(x, idx):\n' \
              '\tstates = [np.zeros(w[idx][0].shape[1], dtype=np.float32)]\n' \
              '\tfor step in range(x.shape[0]):\n' \
              '\t\tstates.append(np.tanh(np.dot(x[step], w[idx][0]) + np.dot(states[-1], w[idx][1]) + b[idx]))\n' \
              '\treturn np.array(states[1:])'
 
-
-class SupportedAttrs:
-  models = [Models.Sequential.name]
-
-  layers = [Layers.Dense.name, Layers.Dropout.name, Layers.SimpleRNN.name]
-
-  activations = [Activations.ReLU.name,
-                 Activations.Sigmoid.name,
-                 Activations.Softmax.name,
-                 Activations.Tanh.name,
-                 Activations.Linear.name]
-
-  layers_without_activations = [Layers.Dropout.name]
-  recurrent_layers = [Layers.SimpleRNN.name]
-  ignored_layers = [Layers.Dropout.name]
+  class Unsupported(BaseLayer):  # propogated with layer info and returned to Konverter if layer is unsupported
+    pass
 
 
-class LayerInfo:
+class BaseLayerInfo:
   supported = False
   has_activation = False
   returns_sequences = False
   is_recurrent = False
   is_ignored = False
 
-  name = None
   activation = None
   weights = None
   biases = None

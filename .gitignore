@@ -1,2 +1,3 @@
 .idea/
 generated.py
+__pycache__/
