@@ -56,7 +56,7 @@ class Konverter:
           if layer.info.activation.needs_function:
             activation = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
           else:  # eg. tanh or relu
-            activation = f'l{idx} = {layer.info.activation.string.lower().format(prev_output)}'
+            activation = f'l{idx} = {layer.info.activation.string.lower().format(f"l{idx}")}'
           model_builder['model'].append(activation)
 
       elif layer.info.is_recurrent:
