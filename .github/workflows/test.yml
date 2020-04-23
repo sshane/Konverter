@@ -10,14 +10,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
-    - name: Install
+    - name: Install dependencies
       uses: abatilo/actions-poetry@v1.5.0
       with:
         python_version: 3.7.0
-        poetry_version: 1.0.5
+        poetry_version: 0.12
         args: install
 
-    - name: Model Output Test
+    - name: Test model outputs
       run: |
         pip install pytest
         pytest tests/test_konverter.py
