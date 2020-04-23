@@ -19,9 +19,8 @@ jobs:
 
     - name: Test model outputs
       run: |
-        cd tests
         ls -lah
         python -V
         python3 -V
-        python3 test_konverter.py
+        python3 tests/test_konverter.py
         python3.7 -V
