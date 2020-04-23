@@ -1,15 +1,9 @@
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-print(sys.path)
-
-from repo_utils.BASEDIR import BASEDIR
 import numpy as np
-import time
-from tensorflow import keras
-from konverter import Konverter
-from tests.build_test_models import create_rnn_model
 import importlib
+from konverter import Konverter
+from repo_utils.BASEDIR import BASEDIR
+from tests.build_test_models import create_rnn_model
 
 os.chdir(BASEDIR)
 
@@ -27,8 +21,6 @@ def test_rnn():
     keras_preds.append(ker_rnn_model.predict([[sample]])[0][0])
   mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
-  print(mae)
-  print(mse)
-  assert mae < 1e-6
-  assert mse < 1e-12
+  assert mae < 1e-5
+  assert mse < 1e-10
   print('Keras vs. Konverted model outputs test: successful')
