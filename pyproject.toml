@@ -22,5 +22,5 @@ pytest = "^5.4.1"
 konverter = 'konverter.__main__:run'
 
 [build-system]
-requires = ["poetry>1.0.5"]
+requires = ["poetry>=1.0.5"]
 build-backend = "poetry.masonry.api"
