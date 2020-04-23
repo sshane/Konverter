@@ -14,4 +14,3 @@ jobs:
     - name: Test model outputs
       run: |
         $RUN "ls -lah"
-        $RUN "python tests/test_konverter.py"
