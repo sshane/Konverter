@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow.keras.layers import Dense, Dropout, GRU, SimpleRNN
 from tensorflow.keras.models import Sequential, load_model
-from utils.BASEDIR import BASEDIR
+from repo_utils.BASEDIR import BASEDIR
 
 samples = 10
 x_train = np.random.rand(samples, 4, 2)

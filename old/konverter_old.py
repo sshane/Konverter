@@ -1,8 +1,9 @@
 import numpy as np
-from utils.BASEDIR import BASEDIR
+from repo_utils.BASEDIR import BASEDIR
 from tensorflow import keras
 from utils.support_classes import SupportedAttrs, LayerInfo, ActivationFunctions
 
+# TODO: add in-one-file conversion support to new Konverter
 
 class Konverter:
   def __init__(self, model, model_name, output_file, tab_spaces):

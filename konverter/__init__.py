@@ -1,9 +1,6 @@
-from konverter.utils.BASEDIR import BASEDIR
 from konverter.utils.model_attributes import Activations, Layers, watermark
 from konverter.utils.konverter_support import KonverterSupport
 import numpy as np
-from tensorflow import keras
-import os
 
 support = KonverterSupport()
 

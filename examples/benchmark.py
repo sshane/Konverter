@@ -1,4 +1,4 @@
-from utils.BASEDIR import BASEDIR
+from repo_utils.BASEDIR import BASEDIR
 import numpy as np
 import time
 import os
