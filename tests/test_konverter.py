@@ -1,7 +1,7 @@
 import sys
 print(sys.path)
 
-# from repo_utils.BASEDIR import BASEDIR
+from konverter.repo_utils.BASEDIR import BASEDIR
 import numpy as np
 import time
 import os
