@@ -1,16 +1,17 @@
 import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 print(sys.path)
 
-from konverter.repo_utils.BASEDIR import BASEDIR
+from .. repo_utils.BASEDIR import BASEDIR
 import numpy as np
 import time
-import os
 from tensorflow import keras
-from konverter import Konverter
-from tests.build_test_models import create_rnn_model
+from .. konverter import Konverter
+from .. tests.build_test_models import create_rnn_model
 import importlib
 
-# os.chdir(BASEDIR)
+os.chdir(BASEDIR)
 
 
 def run_tests():
