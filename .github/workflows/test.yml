@@ -18,6 +18,4 @@ jobs:
         args: install
 
     - name: Test model outputs
-      run: |
-        pip install pytest
-        pytest tests/test_konverter.py
+      run: $RUN "tests/test_konverter.py"
