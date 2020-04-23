@@ -10,7 +10,7 @@ os.chdir(BASEDIR)
 
 def test_rnn():
   ker_rnn_model, shape = create_rnn_model()
-  Konverter(ker_rnn_model, 'tests/rnn_model', 2, verbose=True)
+  Konverter(ker_rnn_model, 'tests/rnn_model', 2, verbose=False)
   kon_rnn_model = importlib.import_module('tests.rnn_model')
 
   samples = np.random.uniform(0, 10, (100, *shape[1:])).astype('float32')
@@ -22,5 +22,5 @@ def test_rnn():
   mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
   assert mae < 1e-6
-  assert mse < 1e-12
+  assert mse < 1e-11
   print('Keras vs. Konverted model outputs test: successful')
