@@ -12,5 +12,5 @@ jobs:
     - uses: actions/checkout@master
 
     - name: Test model outputs
-      with:
-        command: ls -lah
+      run: |
+        ls -lah
