@@ -6,7 +6,7 @@ support = KonverterSupport()
 
 
 class Konverter:
-  def __init__(self, model, output_file, indent_spaces, use_watermark=True):
+  def __init__(self, model, output_file, indent_spaces, verbose=True, use_watermark=True):
     """
     :param model: A preloaded Sequential Keras model
     :param output_file: The desired path and name of the output model files
@@ -16,6 +16,7 @@ class Konverter:
     self.model = model
     self.output_file = output_file
     self.indent = ' ' * indent_spaces
+    self.verbose = verbose
     self.use_watermark = use_watermark
 
     self.layers = []
@@ -24,13 +25,14 @@ class Konverter:
   def start(self):
     self.check_model()
     self.get_layers()
-    self.print_model_architecture()
+    if self.verbose:
+      self.print_model_architecture()
     self.remove_unused_layers()
     self.parse_output_file()
     self.build_konverted_model()
 
   def build_konverted_model(self):
-    print('\nNow building pure Python + NumPy model...')
+    self.print('\nNow building pure Python + NumPy model...')
 
     model_builder = {'imports': ['import numpy as np'],
                      'functions': [],
@@ -76,11 +78,11 @@ class Konverter:
     self.save_model(model_builder)
     self.output_file = self.output_file.replace('\\', '/')
 
-    print('\nSaved Konverted model!')
-    print(f'Model wrapper: {self.output_file}.py\nWeights and biases file: {self.output_file}_weights.npz')
-    print('\nMake sure to change the path inside the wrapper file to your weights if you move the file elsewhere.')
+    self.print('\nSaved Konverted model!')
+    self.print(f'Model wrapper: {self.output_file}.py\nWeights and biases file: {self.output_file}_weights.npz')
+    self.print('\nMake sure to change the path inside the wrapper file to your weights if you move the file elsewhere.')
     if Activations.Softmax.name in support.model_activations(self.layers):
-      print('Important: Since you are using Softmax, make sure that predictions are working correctly!')
+      self.print('Important: Since you are using Softmax, make sure that predictions are working correctly!')
 
   def save_model(self, model_builder):
     wb = list(zip(*[[np.array(layer.info.weights), np.array(layer.info.biases)] for layer in self.layers]))
@@ -133,4 +135,8 @@ class Konverter:
     if str(type(self.model)) != "<class 'tensorflow.python.keras.engine.sequential.Sequential'>":
       raise Exception('Input for `model` must be a Sequential tf.keras model, not {}'.format(type(self.model)))
     elif not support.in_models(self.model.name):
-      raise Exception('Model is `{}`, must be in {}'.format(model.name, [mdl.name for mdl in support.models]))
+      raise Exception('Model is `{}`, must be in {}'.format(self.model.name, [mdl.name for mdl in support.models]))
+
+  def print(self, msg):
+    if self.verbose:
+      print(msg)
