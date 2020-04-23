@@ -1,14 +1,14 @@
 import sys
 import os
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# print(sys.path)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(sys.path)
 
-from .. repo_utils.BASEDIR import BASEDIR
+from repo_utils.BASEDIR import BASEDIR
 import numpy as np
 import time
 from tensorflow import keras
-from .. konverter import Konverter
-from .. tests.build_test_models import create_rnn_model
+from konverter import Konverter
+from tests.build_test_models import create_rnn_model
 import importlib
 
 os.chdir(BASEDIR)
