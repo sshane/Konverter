@@ -15,4 +15,4 @@ jobs:
       run: |
         cd tests
         ls -lah
-        python konverter.py
+        python test_konverter.py
