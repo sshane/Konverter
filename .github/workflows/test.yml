@@ -13,4 +13,5 @@ jobs:
 
     - name: Test model outputs
       run: |
+        cd tests
         ls -lah
