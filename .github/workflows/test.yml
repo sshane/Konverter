@@ -18,4 +18,4 @@ jobs:
         args: install
 
     - name: Test model outputs
-      run: $RUN "tests/test_konverter.py"
+      run: $RUN "python tests/test_konverter.py"
