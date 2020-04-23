@@ -14,7 +14,7 @@ import importlib
 os.chdir(BASEDIR)
 
 
-def run_tests():
+def test_rnn():
   ker_rnn_model, shape = create_rnn_model()
   Konverter(ker_rnn_model, 'tests/rnn_model', 2, verbose=True)
   kon_rnn_model = importlib.import_module('tests.rnn_model')
@@ -32,7 +32,3 @@ def run_tests():
   assert mae < 1e-6
   assert mse < 1e-12
   print('Keras vs. Konverted model outputs test: successful')
-
-
-if __name__ == '__main__':
-  run_tests()

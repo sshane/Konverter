@@ -46,5 +46,5 @@ jobs:
     - name: Test model outputs
       run: |
         ls -lah
-        poetry run pytest tests/test_konverter.py
+        poetry run pytest tests
         python3.7 -V
