@@ -9,16 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
-
-#    steps:
-#    - uses: actions/checkout@master
-#    - name: Install dependencies
-#      uses: abatilo/actions-poetry@v1.5.0
-#      with:
-#        python_version: 3.6
-#        poetry_version: 1.0.5
-#        args: install
+    - uses: actions/checkout@master
 
     - name: Test model outputs
       run: |
