@@ -1,5 +1,5 @@
 import numpy as np
-from repo_utils.BASEDIR import BASEDIR
+from repo_files.utils.BASEDIR import BASEDIR
 from tensorflow import keras
 from utils.support_classes import SupportedAttrs, LayerInfo, ActivationFunctions
 
