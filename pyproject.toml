@@ -10,7 +10,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7.0"
+python = "^3.6"
 typer = "^0.1.1"
 numpy = "^1.18.3"
 
