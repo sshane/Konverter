@@ -1,4 +1,7 @@
-from repo_utils.BASEDIR import BASEDIR
+import sys
+print(sys.path)
+
+# from repo_utils.BASEDIR import BASEDIR
 import numpy as np
 import time
 import os
@@ -7,7 +10,7 @@ from konverter import Konverter
 from tests.build_test_models import create_rnn_model
 import importlib
 
-os.chdir(BASEDIR)
+# os.chdir(BASEDIR)
 
 
 def run_tests():
