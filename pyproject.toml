@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "keras-konverter"
-version = "0.1.0"
+version = "1.0.5"
 description = "A tool to convert simple Keras models to pure Python + NumPy"
 authors = ["Shane Smiskol <shane@smiskol.com>"]
 license = "MIT"
@@ -23,5 +23,5 @@ tensorflow-estimator = "2.1"
 konverter = 'konverter.__main__:run'
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>1.0.5"]
 build-backend = "poetry.masonry.api"
