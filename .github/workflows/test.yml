@@ -8,8 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [Ubuntu, Windows, MacOS]
-        python-version: [3.6, 3.7, 3.8]
+        os: [Ubuntu, Windows]
+        python-version: [3.6, 3.7]
     steps:
       - uses: actions/checkout@v2
 
