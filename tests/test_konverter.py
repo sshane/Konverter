@@ -21,6 +21,6 @@ def test_rnn():
     keras_preds.append(ker_rnn_model.predict([[sample]])[0][0])
   mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
-  assert mae < 1e-5
+  assert mae < 1e-6
   assert mse < 1e-10
   print('Keras vs. Konverted model outputs test: successful')
