@@ -1,6 +1,6 @@
-from utils.BASEDIR import BASEDIR
-from utils.model_attributes import Activations, Layers, watermark
-from utils.konverter_support import KonverterSupport
+from konverter.utils.BASEDIR import BASEDIR
+from konverter.utils.model_attributes import Activations, Layers, watermark
+from konverter.utils.konverter_support import KonverterSupport
 import numpy as np
 from tensorflow import keras
 import os
@@ -17,7 +17,7 @@ class Konverter:
     :param use_watermark: To prepend a watermark comment to model wrapper
     """
     self.model = model
-    self.output_file = os.path.join(BASEDIR, output_file)
+    self.output_file = output_file
     self.indent = ' ' * indent_spaces
     self.use_watermark = use_watermark
 
@@ -133,12 +133,7 @@ class Konverter:
         raise Exception('Layer `{}` with activation `{}` not currently supported (check type or activation)'.format(layer.name, layer.info.activation.name))
 
   def check_model(self):
-    if str(type(model)) != "<class 'tensorflow.python.keras.engine.sequential.Sequential'>":
-      raise Exception('Input for `model` must be a Sequential tf.keras model, not {}'.format(type(model)))
+    if str(type(self.model)) != "<class 'tensorflow.python.keras.engine.sequential.Sequential'>":
+      raise Exception('Input for `model` must be a Sequential tf.keras model, not {}'.format(type(self.model)))
     elif not support.in_models(self.model.name):
       raise Exception('Model is `{}`, must be in {}'.format(model.name, [mdl.name for mdl in support.models]))
-
-
-if __name__ == '__main__':
-  model = keras.models.load_model('{}/examples/dense_model.h5'.format(BASEDIR))
-  konverter = Konverter(model, output_file='examples/dense_model.py', indent_spaces=2)
