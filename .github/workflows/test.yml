@@ -52,7 +52,7 @@ jobs:
       - name: Replace TF with version ${{ matrix.tf-version }}
         if: matrix.tf-version == 1.14
         run: |
-          - poetry run pip install --upgrade --force-reinstall tensorflow==1.14
+          poetry run pip install --upgrade --force-reinstall tensorflow==1.14
 
       - name: Test model outputs
         run: poetry run pytest -s tests
