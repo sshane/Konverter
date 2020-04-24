@@ -3,8 +3,8 @@ on: [push, pull_request]
 
 jobs:
   Tests:
-    name: Windows / ${{ matrix.python-version }}
-    runs-on: Windows-latest
+    name: Ubuntu / ${{ matrix.python-version }}
+    runs-on: Ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
