@@ -17,6 +17,13 @@ jobs:
             tf-version: 2.0.0b0
     steps:
       - uses: actions/checkout@v2
+
+      - name: Load pip cache
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
