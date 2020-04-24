@@ -4,18 +4,19 @@ on: [push, pull_request]
 jobs:
   Tests37:
     name: Ubuntu / ${{ matrix.python-version }} / TF ${{ matrix.tf-version }}
-    runs-on: Ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [Ubuntu-latest]
         python-version: [3.6, 3.7]
         tf-version: [1.14]
         include:
           - python-version: 3.7
             matrix:
               tf-version: 2.0.0b0
+              os: Ubuntu-latest
               python-version: 3.7
-              experimental: true
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
