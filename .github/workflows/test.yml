@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   Tests:
     name: Windows / ${{ matrix.python-version }}
-    runs-on: MacOS-latest
+    runs-on: Windows-latest
     strategy:
       fail-fast: false
       matrix:
