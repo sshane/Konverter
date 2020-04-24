@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.layers import Dense, SimpleRNN
 from tensorflow.keras.models import Sequential
 from repo_utils.BASEDIR import BASEDIR
@@ -7,6 +8,7 @@ os.chdir(BASEDIR)
 
 
 def create_rnn_model():
+  print(tf.__version__)
   samples = 100
   x_train = np.random.uniform(0, 10, (samples, 10, 2))
   y_train = (x_train.take(axis=1, indices=9).take(axis=1, indices=0) / 2) ** 2
