@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   Tests37:
-    name: Ubuntu / Python 3.7 / TF ${{ matrix.tf-version }}
+    name: Ubuntu / 3.7 / TF ${{ matrix.tf-version }}
     runs-on: Ubuntu-latest
     strategy:
       fail-fast: false
@@ -48,19 +48,14 @@ jobs:
         shell: bash
         run: poetry install --no-dev
 
-      - name: Use TensorFlow version 1.14
-        if: matrix.tf-version == 1.14
-        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.14
-
-      - name: Use TensorFlow version 2.0.0b0
-        if: matrix.tf-version == '2.0.0b0'
-        run: poetry run pip install --upgrade --force-reinstall tensorflow==2.0.0b0
+      - name: Use TensorFlow version ${{ matrix.tf-version }}
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==${{ matrix.tf-version }}
 
       - name: Test model outputs
         run: poetry run pytest -s tests
 
   Tests36:
-    name: Ubuntu / Python 3.6 / TF ${{ matrix.tf-version }}
+    name: Ubuntu / 3.6 / TF ${{ matrix.tf-version }}
     runs-on: Ubuntu-latest
     strategy:
       fail-fast: false
@@ -105,13 +100,8 @@ jobs:
         shell: bash
         run: poetry install --no-dev
 
-      - name: Use TensorFlow 1.6
-        if: matrix.tf-version == 1.6
-        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.6
-
-      - name: Use TensorFlow version 1.8
-        if: matrix.tf-version == 1.8
-        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.8
+      - name: Use TensorFlow version ${{ matrix.tf-version }}
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==${{ matrix.tf-version }}
 
       - name: Test model outputs
         run: poetry run pytest -s tests
