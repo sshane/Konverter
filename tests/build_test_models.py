@@ -1,18 +1,13 @@
-import warnings
-
-warnings.filterwarnings('ignore', category=DeprecationWarning)
-warnings.filterwarnings('ignore', category=FutureWarning)
 import os
 import numpy as np
 from tensorflow.keras.layers import Dense, SimpleRNN
 from tensorflow.keras.models import Sequential
 from repo_utils.BASEDIR import BASEDIR
-
 os.chdir(BASEDIR)
 
 
 def create_rnn_model():
-  samples = 200
+  samples = 100
   x_train = np.random.uniform(0, 10, (samples, 10, 2))
   y_train = (x_train.take(axis=1, indices=9).take(axis=1, indices=0) / 2) ** 2
 
@@ -24,7 +19,7 @@ def create_rnn_model():
   model.add(Dense(1, activation='linear'))
 
   model.compile(optimizer='adam', loss='mse')
-  model.fit(x_train, y_train, batch_size=16, epochs=20, verbose=0, validation_split=0.2)
+  model.fit(x_train, y_train, batch_size=16, epochs=20, verbose=1, validation_split=0.2)
   return model, x_train.shape
 
 # print(model.predict_on_batch(np.random.uniform(0, 10, (1, 10, 2))))
