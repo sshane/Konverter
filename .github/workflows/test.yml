@@ -51,7 +51,7 @@ jobs:
 
       - name: Use TensorFlow 1.9
         if: matrix.tf-version == 1.9
-        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.9
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.8
 
       - name: Use TensorFlow version 1.14
         if: matrix.tf-version == 1.14
