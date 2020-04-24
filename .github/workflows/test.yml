@@ -58,7 +58,7 @@ jobs:
         run: poetry run pip install --upgrade --force-reinstall tensorflow==1.15
 
       - name: Use TensorFlow version ${{ matrix.tf-version }}
-        if: matrix.tf-version == 2.0.0b0
+        if: matrix.tf-version == "2.0.0b0"
         run: poetry run pip install --upgrade --force-reinstall tensorflow==2.0.0b0
 
       - name: Test model outputs
