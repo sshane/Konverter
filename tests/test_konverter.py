@@ -9,6 +9,7 @@ os.chdir(BASEDIR)
 
 
 def test_rnn():
+  print('Creating RNN model...')
   ker_rnn_model, shape = create_rnn_model()
   Konverter(ker_rnn_model, 'tests/rnn_model', 2, verbose=False)
   kon_rnn_model = importlib.import_module('tests.rnn_model')
@@ -17,6 +18,7 @@ def test_rnn():
   konverter_preds = []
   keras_preds = []
 
+  print('Comparing models...')
   for sample in samples:
     konverter_preds.append(kon_rnn_model.predict(sample)[0])
     keras_preds.append(ker_rnn_model.predict_on_batch([[sample]])[0][0])
@@ -29,4 +31,4 @@ def test_rnn():
   assert mse < mse_max
   print(f'\nMean absolute error: {mae} < {mae_max}')
   print(f'Mean squared error: {mse} < {mse_max}')
-  print('RNN model passed test')
+  print('RNN model test passed!')
