@@ -3,12 +3,11 @@ on: [push, pull_request]
 
 jobs:
   Tests:
-    name: ${{ matrix.os }} / ${{ matrix.python-version }}
-    runs-on: ${{ matrix.os }}-latest
+    name: Ubuntu / ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [Ubuntu, Windows]
         python-version: [3.6, 3.7]
     steps:
       - uses: actions/checkout@v2
