@@ -11,6 +11,8 @@ jobs:
         python-version: [3.6, 3.7]
         tf-version: [1.14]
         include:
+          - python-version: 3.6
+            tf-version: 1.7
           - python-version: 3.7
             tf-version: 2.0.0b0
     steps:
