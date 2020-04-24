@@ -1,14 +1,15 @@
 import os
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.layers import Dense, SimpleRNN
 from tensorflow.keras.models import Sequential
+from packaging import version
 from repo_utils.BASEDIR import BASEDIR
-try:
-  import tensorflow.python.util.deprecation as deprecation
-except:
+if version.parse(tf.__version__) >= version.parse('1.12'):
   from tensorflow.python.util import deprecation
+  deprecation._PRINT_DEPRECATION_WARNINGS = False
 
-deprecation._PRINT_DEPRECATION_WARNINGS = False
+
 os.chdir(BASEDIR)
 
 
