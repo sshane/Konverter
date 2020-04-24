@@ -50,7 +50,7 @@ jobs:
         run: poetry install --no-dev
 
       - name: Use TensorFlow 1.7
-        if: matrix.tf-version == 1.7
+        if: matrix.tf-version == 1.7 && matrix.python-version < 3.7
         run: poetry run pip install --upgrade --force-reinstall tensorflow==1.7
 
       - name: Use TensorFlow version 1.14
