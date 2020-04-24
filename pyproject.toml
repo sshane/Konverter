@@ -13,10 +13,10 @@ packages = [
 python = "^3.6"  # 3.6 to 3.7 is okay
 typer = "^0.1.1"
 numpy = "^1.18.3"
+pytest = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 tensorflow = "^2.1.0"
-pytest = "^5.4.1"
 
 [tool.poetry.scripts]
 konverter = 'konverter.__main__:run'
