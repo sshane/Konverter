@@ -11,9 +11,9 @@ jobs:
         python-version: [3.6, 3.7]
         tf-version: [1.7, 1.14, 2.0.0b0]
     steps:
+      if: matrix.tf-version != 1.7 && matrix.python-version != 3.6
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
-        if: matrix.tf-version != 1.7 && matrix.python-version != 3.6
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
