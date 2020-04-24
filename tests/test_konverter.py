@@ -19,7 +19,7 @@ def test_rnn():
   print(samples[0])
   for sample in samples:
     konverter_preds.append(kon_rnn_model.predict(sample)[0])
-    keras_preds.append(ker_rnn_model.predict([[[sample]]]))
+    keras_preds.append(ker_rnn_model.predict_on_batch([[sample]])[0][0])
   mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
   assert mae < 1e-6

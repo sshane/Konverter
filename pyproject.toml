@@ -15,7 +15,7 @@ typer = "^0.1.1"
 numpy = "^1.18.3"
 
 [tool.poetry.dev-dependencies]
-tensorflow = "2.2.0rc2"
+tensorflow = "2.0.0b0"
 pytest = "^5.4.1"
 
 [tool.poetry.scripts]
