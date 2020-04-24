@@ -4,11 +4,14 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense, SimpleRNN
 from tensorflow.keras.models import Sequential
 from packaging import version
+import warnings
 from repo_utils.BASEDIR import BASEDIR
 if version.parse(tf.__version__) >= version.parse('1.12'):
   tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
   from tensorflow.python.util import deprecation
   deprecation._PRINT_DEPRECATION_WARNINGS = False
+  warnings.filterwarnings('ignore', category=DeprecationWarning)
+  warnings.filterwarnings('ignore', category=FutureWarning)
 
 
 os.chdir(BASEDIR)
