@@ -6,6 +6,7 @@ from tensorflow.keras.models import Sequential
 from packaging import version
 from repo_utils.BASEDIR import BASEDIR
 if version.parse(tf.__version__) >= version.parse('1.12'):
+  tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
   from tensorflow.python.util import deprecation
   deprecation._PRINT_DEPRECATION_WARNINGS = False
 
