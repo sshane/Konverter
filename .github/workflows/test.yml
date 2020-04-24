@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7]
-        tf-version: [1.15, 2.0.0b0]
+        tf-version: [1.14, 1.15, 2.0.0b0]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -50,9 +50,16 @@ jobs:
         run: poetry install
 
       - name: Use TensorFlow version ${{ matrix.tf-version }}
+        if: matrix.tf-version == 1.14
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.14
+
+      - name: Use TensorFlow version ${{ matrix.tf-version }}
         if: matrix.tf-version == 1.15
-        run: |
-          poetry run pip install --upgrade --force-reinstall tensorflow==1.15
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==1.15
+
+      - name: Use TensorFlow version ${{ matrix.tf-version }}
+        if: matrix.tf-version == 2.0.0b0
+        run: poetry run pip install --upgrade --force-reinstall tensorflow==2.0.0b0
 
       - name: Test model outputs
         run: poetry run pytest -s tests
