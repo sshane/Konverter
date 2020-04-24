@@ -47,7 +47,7 @@ jobs:
       - name: Replace with Tensorflow==2.2.0rc3
         if: matrix.python-version == 3.8
         run: |
-          poetry add "tensorflow==2.2.0rc3"
+          poetry run pip install tensorflow==2.2.0rc3
 
       - name: Install dependencies
         shell: bash
