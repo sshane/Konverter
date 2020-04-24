@@ -24,4 +24,6 @@ def test_rnn():
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
   assert mae < 1e-6
   assert mse < 1e-11
-  print('Keras vs. Konverted model outputs test: successful')
+  print(f'Mean absolute error: {mae}')
+  print(f'Mean squared error: {mse}')
+  print('RNN model passed test')
