@@ -16,6 +16,7 @@ def test_rnn():
   samples = np.random.uniform(0, 10, (100, *shape[1:])).astype('float32')
   konverter_preds = []
   keras_preds = []
+  print(samples[0])
   for sample in samples:
     konverter_preds.append(kon_rnn_model.predict(sample)[0])
     keras_preds.append(ker_rnn_model.predict([[sample]])[0][0])
