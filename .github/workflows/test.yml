@@ -2,7 +2,7 @@ name: Konverter Tests
 on: [push, pull_request]
 
 jobs:
-  Tests37:
+  Tests:
     name: Ubuntu / ${{ matrix.python-version }} / TF ${{ matrix.tf-version }}
     runs-on: Ubuntu-latest
     strategy:
@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Get full python version
         id: full-python-version
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
@@ -59,55 +57,3 @@ jobs:
 
       - name: Test model outputs
         run: poetry run pytest -s tests
-
-#  Tests36:
-#    name: Ubuntu / 3.6 / TF ${{ matrix.tf-version }}
-#    runs-on: Ubuntu-latest
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        tf-version: [1.6, 1.8]
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Python 3.6
-#        uses: actions/setup-python@v1
-#        with:
-#          python-version: 3.6
-#
-#      - name: Get full python version
-#        id: full-python-version
-#        shell: bash
-#        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
-#
-#      - name: Install poetry
-#        shell: bash
-#        run: |
-#          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
-#          python get-poetry.py --preview -y
-#          echo "::set-env name=PATH::$HOME/.poetry/bin:$PATH"
-#
-#      - name: Configure poetry
-#        shell: bash
-#        run: poetry config virtualenvs.in-project true
-#
-#      - name: Set up cache
-#        uses: actions/cache@v1
-#        id: cache
-#        with:
-#          path: .venv
-#          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
-#
-#      - name: Ensure cache is healthy
-#        if: steps.cache.outputs.cache-hit == 'true'
-#        shell: bash
-#        run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
-#
-#      - name: Install dependencies
-#        shell: bash
-#        run: poetry install --no-dev
-#
-#      - name: Use TensorFlow version ${{ matrix.tf-version }}
-#        run: poetry run pip install --upgrade --force-reinstall tensorflow==${{ matrix.tf-version }}
-#
-#      - name: Test model outputs
-#        run: poetry run pytest -s tests
