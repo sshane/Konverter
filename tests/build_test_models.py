@@ -2,7 +2,9 @@ import os
 import numpy as np
 from tensorflow.keras.layers import Dense, SimpleRNN
 from tensorflow.keras.models import Sequential
+import tensorflow.python.util.deprecation as deprecation
 from repo_utils.BASEDIR import BASEDIR
+deprecation._PRINT_DEPRECATION_WARNINGS = False
 os.chdir(BASEDIR)
 
 
