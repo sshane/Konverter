@@ -44,15 +44,15 @@ jobs:
         shell: bash
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
 
-      - name: Install dependencies
-        shell: bash
-        run: poetry install
-
       - name: Replace with Tensorflow==2.2.0rc3
-        if: ${{ matrix.python-version }} == "3.8"
+        if: ${{ matrix.python-version }} == 3.8
         run: |
           poetry remove tensorflow
           poetry add "tensorflow==2.2.0rc3"
+
+      - name: Install dependencies
+        shell: bash
+        run: poetry install
 
       - name: Test model outputs
         run: poetry run pytest -s tests
