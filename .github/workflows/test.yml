@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   Tests37:
-    name: Ubuntu / ${{ matrix.python-version }} / TF ${{ tf-version }}
+    name: Ubuntu / ${{ matrix.python-version }} / TF ${{ matrix.tf-version }}
     runs-on: Ubuntu-latest
     strategy:
       fail-fast: false
