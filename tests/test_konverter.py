@@ -25,8 +25,8 @@ def test_rnn():
 
   mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
   mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
-  mae_max = 1e-6
-  mse_max = 1e-11
+  mae_max = 1e-5
+  mse_max = 1e-10
   assert mae < mae_max
   assert mse < mse_max
   print(f'\nMean absolute error: {mae} < {mae_max}')
