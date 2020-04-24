@@ -47,7 +47,7 @@ jobs:
 
       - name: Install dependencies
         shell: bash
-        run: poetry install
+        run: poetry install --no-dev
 
       - name: Use TensorFlow version ${{ matrix.tf-version }}
         if: matrix.tf-version == 1.14
