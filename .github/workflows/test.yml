@@ -11,8 +11,7 @@ jobs:
         python-version: [3.6, 3.7]
       include:
         - python-version: 3.7
-          matrix:
-            tf-version: [1.14, 2.0.0b0]
+          tf-version: [1.14, 2.0.0b0]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
