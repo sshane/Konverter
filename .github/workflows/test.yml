@@ -51,14 +51,12 @@ jobs:
         shell: bash
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
 
-      - name: Install dependencies
+      - name: Install dependencies (using TensorFlow ${{ matrix.tf-version }})
         shell: bash
         run: |
           poetry install --no-dev
-          poetry add pytest
-
-      - name: Use TensorFlow version ${{ matrix.tf-version }}
-        run: poetry run pip install tensorflow==${{ matrix.tf-version }}
+          poetry run pip install pytest
+          poetry run pip install tensorflow==${{ matrix.tf-version }}
 
       - name: Konvert model and compare with Keras
         run: poetry run pytest -s tests
