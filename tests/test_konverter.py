@@ -3,32 +3,34 @@ import numpy as np
 import importlib
 from konverter import Konverter
 from repo_utils.BASEDIR import BASEDIR
-from tests.build_test_models import create_rnn_model
+from tests.build_test_models import create_model
 
 os.chdir(BASEDIR)
 
 
-def test_rnn():
-  print('\nCreating RNN model...')
-  ker_rnn_model, shape = create_rnn_model()
-  Konverter(ker_rnn_model, 'tests/rnn_model', 2, verbose=False)
-  kon_rnn_model = importlib.import_module('tests.rnn_model')
+def test_models():
+  tests = {'Dense': {'max_mae': 1e-6, 'max_mse': 1e-11},
+           'RNN': {'max_mae': 1e-5, 'max_mse': 1e-10}}
+  samples = 1000
+  for test in tests:
+    print(f'\nCreating trained {test} model', flush=True)
+    ker_model, data_shape = create_model(test)
+    Konverter(ker_model, f'tests/{test.lower()}_model', 2, verbose=False)
+    kon_model = importlib.import_module(f'tests.{test.lower()}_model')
 
-  samples = np.random.uniform(0, 10, (10000, *shape[1:])).astype('float32')
-  konverter_preds = []
-  keras_preds = []
+    x_train = np.random.uniform(0, 10, (samples, *data_shape[1:])).astype('float32')
+    konverter_preds = []
+    keras_preds = []
 
-  print('Comparing models...')
-  for sample in samples:
-    konverter_preds.append(kon_rnn_model.predict(sample)[0])
-    keras_preds.append(ker_rnn_model.predict_on_batch([[sample]])[0][0])
+    print('Comparing model outputs\n', flush=True)
+    for sample in x_train:
+      konverter_preds.append(kon_model.predict(sample)[0])
+      keras_preds.append(ker_model.predict_on_batch([[sample]])[0][0])
 
-  mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
-  mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
-  mae_max = 1e-5
-  mse_max = 1e-10
-  assert mae < mae_max
-  assert mse < mse_max
-  print(f'Mean absolute error: {mae} < {mae_max}')
-  print(f'Mean squared error: {mse} < {mse_max}')
-  print('RNN model test passed!')
+    mae = np.mean(np.abs(np.array(keras_preds) - np.array(konverter_preds)))
+    mse = np.mean((np.array(keras_preds) - np.array(konverter_preds)) ** 2)
+    assert mae < tests[test]['max_mae']
+    assert mse < tests[test]['max_mse']
+    print(f'Mean absolute error: {mae} < {tests[test]["max_mae"]}')
+    print(f'Mean squared error: {mse} < {tests[test]["max_mse"]}')
+    print(f'{test} model passed!')

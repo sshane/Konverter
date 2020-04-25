@@ -1,30 +1,44 @@
 import warnings
-
+import os
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
-import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import numpy as np
-from tensorflow.keras.layers import Dense, SimpleRNN
+from tensorflow.keras.layers import Dense, Dropout, SimpleRNN
 from tensorflow.keras.models import Sequential
-from repo_utils.BASEDIR import BASEDIR
-
-os.chdir(BASEDIR)
+from tensorflow.keras.backend import clear_session
 
 
-def create_rnn_model():
-  samples = 200
-  x_train = np.random.uniform(0, 10, (samples, 10, 2))
-  y_train = (x_train.take(axis=1, indices=9).take(axis=1, indices=0) / 2) ** 2
+def create_model(model_type):
+  clear_session()
+  if model_type == 'Dense':
+    samples = 2000
+    epochs = 20
+    x_train = np.random.uniform(0, 10, (samples, 5))
+    y_train = (np.mean(x_train, axis=1) ** 2) / 2  # half of squared mean of sample
 
-  model = Sequential()
-  model.add(SimpleRNN(64, input_shape=x_train.shape[1:], return_sequences=True))
-  model.add(SimpleRNN(32))
-  model.add(Dense(32, activation='relu'))
-  model.add(Dense(16, activation='relu'))
-  model.add(Dense(1, activation='linear'))
+    model = Sequential()
+    model.add(Dense(128, activation='relu', input_shape=x_train.shape[1:]))
+    model.add(Dense(64, activation='tanh'))
+    model.add(Dropout(0.2))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+  elif model_type == 'RNN':
+    samples = 200
+    epochs = 20
+    x_train = np.random.uniform(0, 10, (samples, 10, 4))
+    y_train = (np.mean(x_train.take(axis=1, indices=8), axis=1) ** 2) / 2  # half of squared mean of sample's 8th index
+
+    model = Sequential()
+    model.add(SimpleRNN(128, input_shape=x_train.shape[1:], return_sequences=True))
+    model.add(SimpleRNN(32))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+  else:
+    raise Exception('Unknown model type: {}'.format(model_type))
 
   model.compile(optimizer='adam', loss='mse')
-  model.fit(x_train, y_train, batch_size=16, epochs=20, verbose=0, validation_split=0.2)
+  model.fit(x_train, y_train, batch_size=32, epochs=epochs, verbose=0)
   return model, x_train.shape
-
-# print(model.predict_on_batch(np.random.uniform(0, 10, (1, 10, 2))))
