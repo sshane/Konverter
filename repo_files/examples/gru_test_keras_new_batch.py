@@ -40,20 +40,11 @@ for _ in range(3):
   for sample in samples:
     states = [np.zeros(units, dtype=np.float32)]
     for ts in range(units):
-      matrix_x = np.matmul(sample[ts], input_kernel) + input_bias
+      x_ = np.split(np.matmul(sample[ts], input_kernel) + input_bias, 3, axis=-1)
+      recurrent = np.split(np.matmul(states[-1], recurrent_kernel) + recurrent_bias, 3, axis=-1)
+      z = sigmoid(x_[0] + recurrent[0])
 
-      x_z, x_r, x_h = np.split(matrix_x, 3, axis=-1)
-
-      matrix_inner = np.matmul(states[-1], recurrent_kernel)
-      matrix_inner += recurrent_bias
-
-      recurrent_z, recurrent_r, recurrent_h = np.split(matrix_inner, 3, axis=-1)
-
-      z = sigmoid(x_z + recurrent_z)
-      r = sigmoid(x_r + recurrent_r)
-      hh = tanh(x_h + r * recurrent_h)
-
-      states.append(z * states[-1] + (1 - z) * hh)
+      states.append(z * states[-1] + (1 - z) * tanh(x_[2] + sigmoid(x_[1] + recurrent[1]) * recurrent[2]))
 
   _t = time.time() - _t
   print(f'konverter time: {_t}')
