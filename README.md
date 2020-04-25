@@ -59,7 +59,8 @@ Nesting your input data with the wrong number of arrays/lists can sometimes caus
 Thanks to [@apiad](https://github.com/apiad) you can now use [Poetry](https://github.com/python-poetry/poetry) to install all the needed dependencies for this tool! However the requirements are a pretty short list:
 - It seems most versions of TensorFlow that include Keras work perfectly fine. Tested from 1.14 to 2.1.0 using Actions and no issues have occurred.
   - **Important**: You must create your models with tf.keras currently (not keras)
-- Python >= 3.6 (for the glorious f-strings! (and [Typer](https://github.com/tiangolo/typer/issues)))
+- Python >= 3.6 (for the glorious f-strings!)
+- [Typer](https://github.com/tiangolo/typer/issues), requires >= 3.6
 
 To install all needed dependencies, simply `cd` into the base directory of Konverter, and run:
 
