@@ -64,7 +64,7 @@ Thanks to [@apiad](https://github.com/apiad) you can now use [Poetry](https://gi
 To install all needed dependencies, simply `cd` into the base directory of Konverter, and run:
 
 ```
-poetry install
+poetry install --no-dev
 ```
 
 ## Current Limitations and Issues
