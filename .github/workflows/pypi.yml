@@ -25,8 +25,11 @@ jobs:
 
       - name: Configure poetry
         shell: bash
-        run: poetry config virtualenvs.in-project true
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry config repositories.test https://test.pypi.org
 
-      - name: Build package
+      - name: Publish package
         shell: bash
-        run: poetry build
+        run: poetry publish --build --repository test --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }}
+ 
