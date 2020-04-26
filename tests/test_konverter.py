@@ -9,8 +9,8 @@ os.chdir(BASEDIR)
 
 
 def test_models():
-  tests = {'Dense': {'max_mae': 1e-6, 'max_mse': 1e-11},
-           'RNN': {'max_mae': 1e-5, 'max_mse': 1e-10}}
+  tests = {'Dense': {'max_mae': 1e-7, 'max_mse': 1e-11},
+           'RNN': {'max_mae': 1e-6, 'max_mse': 1e-10}}
   samples = 1000
   for test in tests:
     print(f'\nCreating trained {test} model', flush=True)
