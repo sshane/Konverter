@@ -1,5 +1,7 @@
 name: Konverter Packaging
-on: [push]
+on: 
+  release:
+    - create
 
 jobs:
   build:
