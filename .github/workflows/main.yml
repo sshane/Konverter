@@ -2,7 +2,7 @@ name: Konverter Packaging
 on: release
 
 jobs:
-  Build:
+  build:
     name: Build package
     runs-on: ubuntu-latest
     strategy:
