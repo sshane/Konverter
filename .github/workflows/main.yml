@@ -4,11 +4,10 @@ on: release
 jobs:
   Build:
     name: Build package
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        python-version: 3.6
+        python-version: [3.6]
     steps:
       - uses: actions/checkout@v2
 
