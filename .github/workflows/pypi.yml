@@ -1,0 +1,38 @@
+name: Konverter Packaging
+
+on:
+  release: 
+    types: [published]
+
+jobs:
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install poetry
+        shell: bash
+        run: |
+          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+          python get-poetry.py --preview -y
+          echo "::set-env name=PATH::$HOME/.poetry/bin:$PATH"
+
+      - name: Configure poetry
+        shell: bash
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry config repositories.test https://test.pypi.org/simple
+
+      - name: Publish package
+        shell: bash
+        run: poetry publish --build --repository test --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }}
+ 
