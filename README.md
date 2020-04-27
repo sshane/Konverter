@@ -12,6 +12,8 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
     - Will be ignored during inference (SNPE 1.19 does NOT support dropout with Keras!)
   - SimpleRNN
     - Batch predictions do not currently work correctly.
+  - GRU
+    - Batch prediction untested 
 - Activations:
   - ReLU
   - Sigmoid
@@ -21,7 +23,7 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
 
 #### Roadmap:
 - [x] SimpleRNN
-- [ ] GRU
+- [x] GRU
 - [ ] LSTM
 - [ ] Conv2D
 - [ ] Properly support batch predictions
