@@ -31,27 +31,21 @@ input_bias = np.array(input_bias)
 recurrent_bias = np.array(recurrent_bias)
 
 
-samples = np.random.uniform(0, 5, (30000, 4, 2))
-# sample = np.array([[[4, 4], [1, 1], [2, 2], [4, 4]], [[4, 4], [2.5, 1], [2, 2], [4, 4]]])
+
+sample = np.array([[4, 4], [2.5, 1], [2, 2], [4, 4]])
 units = 4
 
-for _ in range(3):
-  _t = time.time()
-  for sample in samples:
-    states = [np.zeros(units, dtype=np.float32)]
-    for ts in range(units):
-      x_ = np.split(np.matmul(sample[ts], input_kernel) + input_bias, 3, axis=-1)
-      recurrent = np.split(np.matmul(states[-1], recurrent_kernel) + recurrent_bias, 3, axis=-1)
-      z = sigmoid(x_[0] + recurrent[0])
+states = [np.zeros(units, dtype=np.float32)]
+for ts in range(units):
+  x_ = np.split(np.matmul(sample[ts], input_kernel) + input_bias, 3, axis=-1)
+  recurrent = np.split(np.matmul(states[-1], recurrent_kernel) + recurrent_bias, 3, axis=-1)
+  z = sigmoid(x_[0] + recurrent[0])
 
-      states.append(z * states[-1] + (1 - z) * tanh(x_[2] + sigmoid(x_[1] + recurrent[1]) * recurrent[2]))
-
-  _t = time.time() - _t
-  print(f'konverter time: {_t}')
+  states.append(z * states[-1] + (1 - z) * tanh(x_[2] + sigmoid(x_[1] + recurrent[1]) * recurrent[2]))
 
 
-# l0 = np.dot(h, dense_w) + dense_b
-# print(l0.tolist())
+l0 = np.dot(states[-1], dense_w) + dense_b
+print(l0.tolist())
 
 
 # l0 = np.dot(outputs, dense_w) + dense_b

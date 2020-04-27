@@ -1,4 +1,4 @@
-from konverter.utils.model_attributes import BaseLayerInfo, Models, Activations, Layers
+from konverter.utils.model_attributes import BaseLayerInfo, BaseModelInfo, Models, Activations, Layers
 import numpy as np
 
 
@@ -9,16 +9,16 @@ class KonverterSupport:
     self.activations = [getattr(Activations, i) for i in dir(Activations) if '_' not in i]
 
     self.attrs_without_activations = [Layers.Dropout.name, Activations.Linear.name]
-    self.recurrent_layers = [Layers.SimpleRNN.name]
+    self.recurrent_layers = [Layers.SimpleRNN.name, Layers.GRU.name]
     self.ignored_layers = [Layers.Dropout.name]
 
-  def get_class_from_name(self, name, attr_type):
+  def get_class_from_name(self, name, search_in):
     """
     :param name: A name of an attribute, ex. keras.layers.Dense, keras.activations.relu
-    :param attr_type: A class list to search, ex. 'layers', 'models'
+    :param search_in: A class list to search, ex. 'layers', 'models'
     :return: A class object of the attribute name, or False if not found/supported
     """
-    attrs = getattr(self, attr_type, None)
+    attrs = getattr(self, search_in, None)
     for attr_class in attrs:
       if name == attr_class.name:
         return attr_class()  # new instance of class
@@ -44,12 +44,28 @@ class KonverterSupport:
         a.append(lyr.info.activation.name)
     return set(a)
 
-  def is_function(self, s):
-    return 'def' in s
+  def attr_map(self, classes, attr):
+    """Takes a list of (layer/activation/model) classes and returns the specified attribute from each"""
+    return list(map(lambda cls: getattr(cls, attr), classes))
+
+  def get_model_info(self, model):
+    name = getattr(model, '_keras_api_names_v1')[0]
+    model_class = self.get_class_from_name(name, 'models')
+    if not model_class:
+      model_class = Models.Unsupported()
+      model_class.name = name
+      return model_class
+
+    model_class.info = BaseModelInfo()
+    model_class.info.input_shape = model.input_shape
+    model_class.info.supported = True
+    return model_class
 
   def get_layer_info(self, layer):
-    name = getattr(layer, '_keras_api_names_v1')[0]  # assume only 1 name
-    layer_class = self.get_class_from_name(name, 'layers')
+    name = getattr(layer, '_keras_api_names_v1')
+    if not len(name):
+      name = getattr(layer, '_keras_api_names')
+    layer_class = self.get_class_from_name(name[0], 'layers')  # assume only one name
     if not layer_class:
       layer_class = Layers.Unsupported()  # add activation below to raise exception with
       layer_class.name = name
@@ -71,7 +87,7 @@ class KonverterSupport:
 
     if layer_class.info.has_activation:
       # check layer activation against this layer's supported activations
-      if layer_class.info.activation.name in layer_class.activations:
+      if layer_class.info.activation.name in self.attr_map(layer_class.supported_activations, 'name'):
         layer_class.info.supported = True
     elif layer_class.info.is_ignored or is_linear:  # skip activation check if layer has no activation (eg. dropout or linear)
       layer_class.info.supported = True

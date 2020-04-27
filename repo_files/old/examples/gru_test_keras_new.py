@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
 from repo_utils.BASEDIR import BASEDIR
 import os
+import time
 from tensorflow.python.keras import backend as K
 
 os.chdir(BASEDIR)
@@ -15,6 +16,9 @@ def tanh(x):
 def sigmoid(x):
   return 1 / (1 + np.exp(-x))
 
+def hard_sigmoid(x):
+  return np.maximum(0, np.minimum(1, x * 0.2 + 0.5))
+
 
 dense_w = np.array(model.layers[1].get_weights()[0])
 dense_b = np.array(model.layers[1].get_weights()[1])
@@ -24,45 +28,70 @@ recurrent_kernel = np.array(model.layers[0].get_weights()[1])
 bias = np.array(model.layers[0].get_weights()[2])
 input_bias, recurrent_bias = tf.unstack(tf.convert_to_tensor(bias))
 
-sample = np.array([[4, 4], [2.5, 1], [2, 2], [4, 4]])
-x_e = sample
+
+samples = np.random.uniform(0, 5, (300, 4, 2))
 units = 4
 reset_after = True
 
-Hts = [np.zeros(4)]
-outputs = []
-for t in range(len(sample)):
-  print(t)
-  matrix_x = np.dot(sample[t], input_kernel)
-  matrix_x += input_bias
 
-  x_z, x_r, x_h = np.split(matrix_x, 3, axis=-1)
+_t = time.time()
+for sample in samples:
+  model.predict_on_batch([[sample]])
 
-  matrix_inner = np.dot(Hts[-1], recurrent_kernel)
-  matrix_inner += recurrent_bias
+_t = time.time() - _t
+print(f'keras time: {_t}')
 
-  # if reset_after:
-  #   matrix_inner = np.dot(Hts[-1], recurrent_kernel)
-  #   matrix_inner = matrix_inner + recurrent_bias
-  # else:
-  #   matrix_inner = np.dot(Hts[-1], recurrent_kernel[:, :2 * units])
+_t = time.time()
+for sample in samples:
+  Hts = [np.zeros(units)]
+  for ts in range(len(sample)):
+    t = time.time()
+    matrix_x = np.dot(sample[ts], input_kernel)
+    matrix_x += input_bias
+    print(time.time() - t)
 
-  recurrent_z, recurrent_r, recurrent_h = np.split(matrix_inner.numpy(), 3, axis=-1)
+    t = time.time()
+    x_z, x_r, x_h = np.split(matrix_x, 3, axis=-1)
+    print(time.time() - t)
 
-  z = sigmoid(x_z + recurrent_z)
-  r = sigmoid(x_r + recurrent_r)
-  hh = tanh(x_h + r * recurrent_h)
+    t = time.time()
+    matrix_inner = np.dot(Hts[-1], recurrent_kernel)
+    matrix_inner += recurrent_bias
+    print(time.time() - t)
+    t = time.time()
 
-  h = z * Hts[-1] + (1 - z) * hh
-  # Y = np.dot(h, W_hq) + b_q
-  Hts.append(h)
-  # Y = np.dot(h, W_hq) + b_q
-  # l0 = np.dot(h.numpy(), dense_w) + dense_b
-  # print(l0.tolist())
+    # if reset_after:
+    #   matrix_inner = np.dot(Hts[-1], recurrent_kernel)
+    #   matrix_inner = matrix_inner + recurrent_bias
+    # else:
+    #   matrix_inner = np.dot(Hts[-1], recurrent_kernel[:, :2 * units])
+
+    recurrent_z, recurrent_r, recurrent_h = np.split(matrix_inner.numpy(), 3, axis=-1)
+    print(time.time() - t)
+
+    t = time.time()
+    z = sigmoid(x_z + recurrent_z)
+    r = sigmoid(x_r + recurrent_r)
+    hh = tanh(x_h + r * recurrent_h)
+
+    print(time.time() - t)
+    h = z * Hts[-1] + (1 - z) * hh
+    t = time.time()
+    # Y = np.dot(h, W_hq) + b_q
+    Hts.append(h)
+    print(time.time() - t)
+    t = time.time()
+    np.dot(Hts[-1], dense_w) + dense_b
+    print(time.time() - t)
+    print()
+    # print(l0.tolist()[0])
+    # Y = np.dot(h, W_hq) + b_q
+    # l0 = np.dot(h.numpy(), dense_w) + dense_b
+    # print(l0.tolist())
+_t = time.time() - _t
+print(f'konverter time: {_t}')
 
 
-l0 = np.dot(Hts[-1], dense_w) + dense_b
-print(l0.tolist())
 
 
 # l0 = np.dot(outputs, dense_w) + dense_b

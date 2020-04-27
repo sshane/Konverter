@@ -7,6 +7,6 @@ samples = 10
 x_train = np.random.rand(samples, 4, 2)
 
 model = load_model('{}/repo_files/examples/gru_model.h5'.format(BASEDIR))
-print(model.predict([[[4, 4], [2.5, 1], [2, 2], [4, 4]]]))
+print(model.predict([[[4, 4], [1, 1], [2, 2], [4, 4]], [[4, 4], [2.5, 1], [2, 2], [4, 4]]]).tolist())
 
 # exit()

@@ -1,6 +1,14 @@
 class Models:
-  class Sequential:
-    name = 'sequential'
+  class _BaseModel:
+    name = None
+    alias = None
+
+  class Sequential(_BaseModel):
+    name = 'keras.models.Sequential'
+    alias = 'sequential'
+
+  class Unsupported(_BaseModel):
+    pass
 
 
 class Activations:
@@ -9,36 +17,35 @@ class Activations:
       ex. activation in string format
     To add new activations, use the code_converter function and add them here!
   """
-  class BaseAcivation:
+  class _BaseAcivation:
     name = None
     alias = None
     string = None
     needs_function = True
 
-  class ReLU(BaseAcivation):
+  class ReLU(_BaseAcivation):
     name = 'keras.activations.relu'
     alias = 'relu'
     string = 'np.maximum(0, {})'
     needs_function = False
 
-  class Sigmoid(BaseAcivation):
+  class Sigmoid(_BaseAcivation):
     name = 'keras.activations.sigmoid'
     alias = 'sigmoid'
     string = 'def sigmoid(x):\n\treturn 1 / (1 + np.exp(-x))'
 
-  class Softmax(BaseAcivation):
+  class Softmax(_BaseAcivation):
     name = 'keras.activations.softmax'
     alias = 'softmax'
     string = 'def softmax(x):\n\treturn np.exp(x) / np.sum(np.exp(x), axis=0)'
 
-  class Tanh(BaseAcivation):
+  class Tanh(_BaseAcivation):
     name = 'keras.activations.tanh'
     alias = 'tanh'
     string = 'np.tanh({})'  # don't define a function if you don't want your string added to file as a function
     needs_function = False
 
-
-  class Linear(BaseAcivation):
+  class Linear(_BaseAcivation):
     name = 'keras.activations.linear'
     alias = 'linear'
 
@@ -49,34 +56,54 @@ class Layers:
       ex. function in string format
     To add new layers, use the code_converter function and add them here!
   """
-  class BaseLayer:
+  class _BaseLayer:
     name = None
     alias = None
-    activations = [None]
     string = None
+    supported_activations = []
+    needed_activations = []
 
-  class Dense(BaseLayer):
+  class Dense(_BaseLayer):
     name = 'keras.layers.Dense'
     alias = 'dense'
-    activations = [Activations.ReLU.name, Activations.Sigmoid.name, Activations.Softmax.name, Activations.Tanh.name, Activations.Linear.name]
+    supported_activations = [Activations.ReLU, Activations.Sigmoid, Activations.Softmax, Activations.Tanh, Activations.Linear]
     string = 'np.dot({}, w[{}]) + b[{}]'  # n0 is the previous layer, n1 is weight, n2 is bias
 
-  class Dropout(BaseLayer):
+  class Dropout(_BaseLayer):
     name = 'keras.layers.Dropout'
     alias = 'dropout'
 
-  class SimpleRNN(BaseLayer):
+  class SimpleRNN(_BaseLayer):
     name = 'keras.layers.SimpleRNN'
     alias = 'SimpleRNN'
-    activations = [Activations.Tanh.name]
+    supported_activations = [Activations.Tanh]
     string = 'def simplernn(x, idx):\n' \
              '\tstates = [np.zeros(w[idx][0].shape[1], dtype=np.float32)]\n' \
-             '\tfor step in range(x.shape[0]):\n' \
+             '\tfor step in range({}):\n' \
              '\t\tstates.append(np.tanh(np.dot(x[step], w[idx][0]) + np.dot(states[-1], w[idx][1]) + b[idx]))\n' \
              '\treturn np.array(states[1:])'
 
-  class Unsupported(BaseLayer):  # propogated with layer info and returned to Konverter if layer is unsupported
+  class GRU(_BaseLayer):
+    name = 'keras.layers.GRU'
+    alias = 'GRU'
+    supported_activations = [Activations.Tanh, Activations.Sigmoid]
+    needed_activations = [Activations.Tanh, Activations.Sigmoid]
+    string = 'def gru(x, idx, units):\n' \
+             '\tstates = [np.zeros(units, dtype=np.float32)]\n' \
+             '\tfor step in range({}):\n' \
+             '\t\tx_ = np.split(np.matmul(x[step], w[idx][0]) + b[idx][0], 3, axis=-1)\n' \
+             '\t\trecurrent = np.split(np.matmul(states[-1], w[idx][1]) + b[idx][1], 3, axis=-1)\n' \
+             '\t\tz = sigmoid(x_[0] + recurrent[0])\n' \
+             '\t\tstates.append(z * states[-1] + (1 - z) * np.tanh(x_[2] + sigmoid(x_[1] + recurrent[1]) * recurrent[2]))\n' \
+             '\treturn np.array(states[1:])'
+
+  class Unsupported(_BaseLayer):  # propogated with layer info and returned to Konverter if layer is unsupported
     pass
+
+
+class BaseModelInfo:
+  supported = False
+  input_shape = None  # this will need to be moved if we support functional models
 
 
 class BaseLayerInfo:
@@ -93,7 +120,7 @@ class BaseLayerInfo:
 
 def code_converter(indentation_spaces=2):
   """
-  :param indentation_spaces: Enter the number of spaces for each 'indent'
+  :param indentation_spaces: Enter the number of spaces for each 'indent' in your supplied code
   :return: A string representation of the input function
   """
   print('This converts code into a supported string format for Konverter.')

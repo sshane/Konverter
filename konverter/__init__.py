@@ -53,24 +53,33 @@ class Konverter:
         model_builder['model'].append(model_line)
         if layer.info.has_activation:
           if layer.info.activation.needs_function:
-            activation = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
+            lyr_w_act = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
           else:  # eg. tanh or relu
-            activation = f'l{idx} = {layer.info.activation.string.lower().format(f"l{idx}")}'
-          model_builder['model'].append(activation)
+            lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}')
+            lyr_w_act = f'l{idx} = {lyr_w_act}'
+          model_builder['model'].append(lyr_w_act)
 
       elif layer.info.is_recurrent:
-        rnn_function = f'l{idx} = {layer.alias.lower()}({prev_output}, {idx})'
+        if layer.name == Layers.SimpleRNN.name:
+          rnn_function = f'l{idx} = {layer.alias.lower()}({prev_output}, {idx})'
+        elif layer.name == Layers.GRU.name:
+          units = layer.info.weights[0].shape[1] // 3
+          rnn_function = f'l{idx} = {layer.alias.lower()}({prev_output}, {idx}, {units})'
+        else:
+          raise Exception('Unknown recurrent layer type: {}'.format(layer.name))
         if not layer.info.returns_sequences:
           rnn_function += '[-1]'
         model_builder['model'].append(rnn_function)
 
       # work on functions: activations/simplernn
       if layer.info.activation.string is not None:
-        if support.is_function(layer.info.activation.string):  # don't add tanh as a function
+        if layer.info.activation.needs_function:  # don't add tanh/relu as a function
           model_builder['functions'].append(layer.info.activation.string)
 
-        if layer.info.is_recurrent:
-          model_builder['functions'].append(layer.string)
+        if layer.info.is_recurrent:  # recurrent layers are specially handled here, need to improve this
+          func = layer.string.format(self.model_info.info.input_shape[1])
+          model_builder['functions'].append(func)
+          model_builder['functions'] += [act.string for act in layer.needed_activations if act.needs_function]
 
     model_builder['functions'] = set(model_builder['functions'])  # remove duplicates
     model_builder['model'].append(f'return l{len(self.layers) - 1}')
@@ -132,10 +141,11 @@ class Konverter:
         raise Exception('Layer `{}` with activation `{}` not currently supported (check type or activation)'.format(layer.name, layer.info.activation.name))
 
   def check_model(self):
-    if str(type(self.model)) != "<class 'tensorflow.python.keras.engine.sequential.Sequential'>":
-      raise Exception('Input for `model` must be a Sequential tf.keras model, not {}'.format(type(self.model)))
-    elif not support.in_models(self.model.name):
-      raise Exception('Model is `{}`, must be in {}'.format(self.model.name, [mdl.name for mdl in support.models]))
+    self.model_info = support.get_model_info(self.model)
+    if "tensorflow.python.keras.engine" not in str(type(self.model)):
+      raise Exception('Input model must be a Sequential tf.keras model, not {}'.format(type(self.model)))
+    elif not self.model_info.info.supported:
+      raise Exception('Model is `{}`, must be in {}'.format(self.model.name, support.attr_map(support.models, 'name')))
 
   def print(self, msg):
     if self.verbose:
