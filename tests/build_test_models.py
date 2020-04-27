@@ -39,9 +39,9 @@ def create_model(model_type):
     y_train = (np.mean(x_train.take(axis=1, indices=8), axis=1) ** 2) / 2  # half of squared mean of sample's 8th index
 
     model = Sequential()
-    model.add(GRU(128, input_shape=x_train.shape[1:], return_sequences=True))
-    model.add(GRU(64, return_sequences=True))
-    model.add(GRU(32))
+    model.add(GRU(128, input_shape=x_train.shape[1:], return_sequences=True, implementation=2))
+    model.add(GRU(64, return_sequences=True, implementation=2))
+    model.add(GRU(32, implementation=2))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(1, activation='linear'))
   else:
