@@ -1,5 +1,5 @@
 [[package]]
-category = "main"
+category = "dev"
 description = "Abseil Python Common Libraries, see https://github.com/abseil/abseil-py."
 name = "absl-py"
 optional = false
@@ -10,7 +10,7 @@ version = "0.9.0"
 six = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Read/rewrite/write Python ASTs"
 name = "astor"
 optional = false
@@ -41,7 +41,7 @@ docs = ["sphinx", "zope.interface"]
 tests = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Extensible memoizing collections and decorators"
 name = "cachetools"
 optional = false
@@ -49,7 +49,7 @@ python-versions = "~=3.5"
 version = "4.1.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python package for providing Mozilla's CA Bundle."
 name = "certifi"
 optional = false
@@ -57,7 +57,7 @@ python-versions = "*"
 version = "2020.4.5.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Universal encoding detector for Python 2 and 3"
 name = "chardet"
 optional = false
@@ -82,7 +82,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "0.4.3"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python AST that abstracts the underlying Python version"
 name = "gast"
 optional = false
@@ -90,7 +90,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.2.2"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Google Authentication Library"
 name = "google-auth"
 optional = false
@@ -105,7 +105,7 @@ setuptools = ">=40.3.0"
 six = ">=1.9.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Google Authentication Library"
 name = "google-auth-oauthlib"
 optional = false
@@ -120,7 +120,7 @@ requests-oauthlib = ">=0.7.0"
 tool = ["click"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "pasta is an AST-based Python refactoring library"
 name = "google-pasta"
 optional = false
@@ -131,7 +131,7 @@ version = "0.2.0"
 six = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "HTTP/2-based RPC framework"
 name = "grpcio"
 optional = false
@@ -142,7 +142,7 @@ version = "1.28.1"
 six = ">=1.5.2"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Read and write HDF5 files from Python"
 name = "h5py"
 optional = false
@@ -154,7 +154,7 @@ numpy = ">=1.7"
 six = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
@@ -178,7 +178,7 @@ docs = ["sphinx", "rst.linker"]
 testing = ["packaging", "importlib-resources"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Reference implementations of popular deep learning models"
 name = "keras-applications"
 optional = false
@@ -193,7 +193,7 @@ numpy = ">=1.9.1"
 tests = ["pytest", "pytest-pep8", "pytest-xdist", "pytest-cov"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Easy data preprocessing and data augmentation for deep learning models"
 name = "keras-preprocessing"
 optional = false
@@ -210,7 +210,7 @@ pep8 = ["flake8"]
 tests = ["pandas", "pillow", "tensorflow (1.7)", "keras", "pytest", "pytest-xdist", "pytest-cov"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python implementation of Markdown."
 name = "markdown"
 optional = false
@@ -240,7 +240,7 @@ python-versions = ">=3.5"
 version = "1.18.3"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
 name = "oauthlib"
 optional = false
@@ -253,7 +253,7 @@ signals = ["blinker"]
 signedtoken = ["cryptography", "pyjwt (>=1.0.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Optimizing numpys einsum function"
 name = "opt-einsum"
 optional = false
@@ -296,7 +296,7 @@ version = ">=0.12"
 dev = ["pre-commit", "tox"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Protocol Buffers"
 name = "protobuf"
 optional = false
@@ -316,7 +316,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.8.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "ASN.1 types and codecs"
 name = "pyasn1"
 optional = false
@@ -324,7 +324,7 @@ python-versions = "*"
 version = "0.4.8"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "A collection of ASN.1-based protocols modules."
 name = "pyasn1-modules"
 optional = false
@@ -369,7 +369,7 @@ checkqa-mypy = ["mypy (v0.761)"]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python HTTP for Humans."
 name = "requests"
 optional = false
@@ -387,7 +387,7 @@ security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)"]
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "OAuthlib authentication support for Requests."
 name = "requests-oauthlib"
 optional = false
@@ -402,7 +402,7 @@ requests = ">=2.0.0"
 rsa = ["oauthlib (>=3.0.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Pure-Python RSA implementation"
 name = "rsa"
 optional = false
@@ -413,7 +413,7 @@ version = "4.0"
 pyasn1 = ">=0.1.3"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "SciPy: Scientific Library for Python"
 marker = "python_version >= \"3\""
 name = "scipy"
@@ -425,7 +425,7 @@ version = "1.4.1"
 numpy = ">=1.13.3"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -433,7 +433,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "1.14.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "TensorBoard lets you watch Tensors Flow"
 name = "tensorboard"
 optional = false
@@ -458,7 +458,7 @@ python = ">=3"
 version = ">=0.26"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "TensorFlow is an open source machine learning framework for everyone."
 name = "tensorflow"
 optional = false
@@ -491,7 +491,7 @@ python = ">=3"
 version = ">=0.26"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "TensorFlow Estimator."
 name = "tensorflow-estimator"
 optional = false
@@ -499,7 +499,7 @@ python-versions = "*"
 version = "2.2.0rc0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "ANSII Color formatting for output in terminal."
 name = "termcolor"
 optional = false
@@ -524,7 +524,7 @@ doc = ["mkdocs", "mkdocs-material", "markdown-include"]
 test = ["shellingham", "pytest (>=4.4.0)", "pytest-cov", "coverage", "pytest-xdist", "pytest-sugar", "mypy", "black", "isort"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 name = "urllib3"
 optional = false
@@ -545,7 +545,7 @@ python-versions = "*"
 version = "0.1.9"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "The comprehensive WSGI web application library."
 name = "werkzeug"
 optional = false
@@ -557,7 +557,7 @@ dev = ["pytest", "pytest-timeout", "coverage", "tox", "sphinx", "pallets-sphinx-
 watchdog = ["watchdog"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "A built-package format for Python"
 marker = "python_version >= \"3\""
 name = "wheel"
@@ -569,7 +569,7 @@ version = "0.34.2"
 test = ["pytest (>=3.0.0)", "pytest-cov"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Module for decorators, wrappers and monkey patching."
 name = "wrapt"
 optional = false
@@ -590,7 +590,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "5261a5c741035d28fed1c311796d5505653471d03ed423e7f0522acc90ab1bda"
+content-hash = "9521e76376809ec83c36772ee20a54dc5447a8e6c26796dfe240a5131aaa1e2d"
 python-versions = "^3.6"  # 3.6 to 3.7 is okay, or 3.8 if you're using a beta version of tf
 
 [metadata.files]
