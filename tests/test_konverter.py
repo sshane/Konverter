@@ -1,6 +1,13 @@
+import warnings
 import os
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+warnings.filterwarnings('ignore', category=FutureWarning)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import numpy as np
 import importlib
+import tensorflow as tf
+from packaging import version
 from konverter import Konverter
 from utils.BASEDIR import BASEDIR
 from tests.build_test_models import create_model
@@ -12,6 +19,8 @@ def test_models():
   tests = {'Dense': {'max_mae': 1e-5, 'max_mse': 1e-11},
            'SimpleRNN': {'max_mae': 1e-5, 'max_mse': 1e-11},
            'GRU': {'max_mae': 1e-5, 'max_mse': 1e-11}}
+  if version.parse(tf.__version__) < version.parse('2'):
+    del tests['GRU']
   samples = 1000
   for test in tests:
     print(f'\nCreating trained {test} model', flush=True)

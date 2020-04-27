@@ -1,9 +1,3 @@
-import warnings
-import os
-warnings.filterwarnings('ignore', category=DeprecationWarning)
-warnings.filterwarnings('ignore', category=FutureWarning)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 import numpy as np
 from tensorflow.keras.layers import Dense, SimpleRNN, GRU
 from tensorflow.keras.models import Sequential
