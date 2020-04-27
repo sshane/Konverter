@@ -2,7 +2,7 @@ import os
 import numpy as np
 import importlib
 from konverter import Konverter
-from repo_utils.BASEDIR import BASEDIR
+from utils.BASEDIR import BASEDIR
 from tests.build_test_models import create_model
 
 os.chdir(BASEDIR)

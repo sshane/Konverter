@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow.keras.layers import Dense, Dropout, GRU, SimpleRNN
 from tensorflow.keras.models import Sequential
-from repo_utils.BASEDIR import BASEDIR
+from utils.BASEDIR import BASEDIR
 
 samples = 5000
 # x_train = np.array([[np.random.uniform(0, 20), np.random.uniform(0, 20), np.random.uniform(0, 20)] for _ in range(samples)])

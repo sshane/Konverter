@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
-from repo_utils.BASEDIR import BASEDIR
+from utils.BASEDIR import BASEDIR
 import os
 import time
 from tensorflow.python.keras import backend as K

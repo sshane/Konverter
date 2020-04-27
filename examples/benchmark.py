@@ -1,10 +1,10 @@
-from repo_files.utils.BASEDIR import BASEDIR
+from utils.BASEDIR import BASEDIR
 import numpy as np
 import time
 import os
 from tensorflow import keras
 from konverter import Konverter
-from repo_files.examples.dense_model import predict
+from examples.dense_model import predict
 
 os.chdir(BASEDIR)
 model = keras.models.load_model('examples/dense_model.h5')
