@@ -1,7 +1,7 @@
 # Konverter ![Konverter Tests](https://github.com/ShaneSmiskol/Konverter/workflows/Konverter%20Tests/badge.svg)
 ### Convert your Keras models into pure Python + NumPy.
 
-The goal of this tool is to provide a quick and easy way to execute simple Keras models on machines or setups where utilizing TensorFlow/Keras is impossible. Specifically, in my case, to replace SNPE (Snapdragon Neural Processing Engine) for inference on phones with Python.
+The goal of this tool is to provide a quick and easy way to execute Keras models on machines or setups where utilizing TensorFlow/Keras is impossible. Specifically, in my case, to replace SNPE (Snapdragon Neural Processing Engine) for inference on phones with Python.
 
 ## Supported Keras Model Attributes
 - Models:
@@ -21,18 +21,14 @@ The goal of this tool is to provide a quick and easy way to execute simple Keras
   - Tanh
   - Linear/None
 
-#### Roadmap:
-- [x] SimpleRNN
-- [x] GRU
-- [ ] LSTM
-- [ ] Conv2D
-- [ ] Properly support batch predictions
-- [ ] Fix issues with softmax and class-based models
+#### Roadmap
+The project to do list can be [found here](https://github.com/ShaneSmiskol/Konverter/projects/1).
 
 ## Features
 - Super quick conversion of your models. Takes less than a second.
 - Usually reduces the size of Keras models by about 69.37%.
-- Prediction is usually quicker than Keras or SNPE in most cases.
+- In some cases, prediction is quicker than Keras or SNPE (dense models).
+  - RNNs: Since we lose the GPU using NumPy, predictions may be slower
 - Stores the weights and biases of your model in a separate compressed NumPy file.
 
 ## Benchmarks
