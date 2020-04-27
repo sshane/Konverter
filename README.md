@@ -52,7 +52,7 @@ To predict: Run `predict()` function in your Python model. Always double check t
 Nesting your input data with the wrong number of arrays/lists can sometimes cause the outputs to be complete incorrect; you may need to experiment with `predict[[sample]])` vs. `predict([sample])` for example.
 
 ## Demo:
-<img src="repo_files/.media/konverter.gif?raw=true" width="913">
+<img src=".media/konverter.gif?raw=true" width="913">
 
 
 ## Dependencies
