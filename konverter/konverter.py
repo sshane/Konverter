@@ -8,11 +8,16 @@ support = KonverterSupport()
 
 
 class Konverter:
-  def __init__(self, input_model, output_file, indent_spaces=2, verbose=True, use_watermark=True):
+  def __init__(self, tf_verbose=False):
+    if not tf_verbose:
+      os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+  def konvert(self, input_model, output_file, indent_spaces=2, verbose=True, use_watermark=True):
     """
     :param input_model: Either the the location of your tf.keras .h5 model, or a preloaded model
     :param output_file: The desired path and name of the output model files
     :param indent_spaces: The number of spaces to use for indentation
+    :param verbose: Print status messages from Konverter
     :param use_watermark: To prepend a watermark comment to model wrapper
     """
     self.input_model = input_model
@@ -148,7 +153,7 @@ class Konverter:
         models = importlib.import_module('tensorflow.keras.models')
         self.model = models.load_model(self.input_model)
       else:
-        raise Exception('It seems like the supplied model file doesn\'t exist!')
+        raise Exception('The supplied model file path doesn\'t exist!')
     else:
       self.model = self.input_model
     self.model_info = support.get_model_info(self.model)
