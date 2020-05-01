@@ -148,6 +148,8 @@ class Konverter:
         self.model = load_model(self.input_model)
       else:
         raise Exception('It seems like the supplied model file doesn\'t exist!')
+    else:
+      self.model = self.input_model
     self.model_info = support.get_model_info(self.model)
     if "tensorflow.python.keras.engine" not in str(type(self.model)):
       raise Exception('Input model must be a Sequential tf.keras model, not {}'.format(type(self.model)))
