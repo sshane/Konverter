@@ -15,9 +15,9 @@ class Konverter:
   def konvert(self, input_model, output_file, indent_spaces=2, verbose=True, use_watermark=True):
     """
     :param input_model: Either the the location of your tf.keras .h5 model, or a preloaded model
-    :param output_file: The desired path and name of the output model files
+    :param output_file: The desired path and name of the output files, will be automatically formatted if .py is the suffix
     :param indent_spaces: The number of spaces to use for indentation
-    :param verbose: Print status messages from Konverter
+    :param verbose: To print status messages from Konverter
     :param use_watermark: To prepend a watermark comment to model wrapper
     """
     self.input_model = input_model

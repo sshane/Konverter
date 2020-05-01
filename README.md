@@ -14,7 +14,7 @@ The goal of this tool is to provide a quick and easy way to execute Keras models
     - Batch predictions do not currently work correctly.
   - GRU
     - **Important:** The current GRU support is based on [`GRU v3`](https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU) in tf.keras 2.1.0. It will not work correctly with older versions of TensorFlow.
-    - Batch prediction untested 
+    - Batch prediction untested
 - Activations:
   - ReLU
   - Sigmoid
@@ -35,20 +35,41 @@ The project to do list can be [found here](https://github.com/ShaneSmiskol/Konve
 ## Benchmarks
 Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 
-## Usage
-*To update.*
+## Installation & Usage
+#### Installation:
+##### Install Konverter using pip:
+`pip install keras-konverter`
 
-~~To convert your Keras model, simply edit the last few lines in [konverter.py](konverter.py#L175).~~
+#### Usage:
+##### Import Konverter and create an instance:
+```python
+PS C:\Git\Konverter> python
+Python 3.7.5
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from konverter import Konverter
+>>> konverter = Konverter()
+```
 
-~~1. For the `model` variable, you'll want to replace the path with the location of your Keras `.h5` model.
-2. For the `output_file` variable, enter your desired output model name. The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory.
-3. Finally, enter the number of spaces to use as indentation and run with `python konverter.py`!~~
+Now you can use the instance to Konvert a model:
+```python
+>>> konverter.konvert(input_model='examples/all_dense.h5', output_file='examples/all_dense.py')
+```
+
+Valid parameters:
+- `input_model`: Either the the location of your tf.keras .h5 model, or a preloaded model
+- `output_file`: The desired path and name of the output files, will be automatically formatted if .py is the suffix
+- Optional:
+  - `indent_spaces`: The number of spaces to use for indentation
+  - `verbose`: To print status messages from Konverter
+  - `use_watermark`: To prepend a watermark comment to model wrapper
+
+*Note: The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory. Make sure you change the path inside the model wrapper if you move the files after Konversion.*
 
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
-To predict: Run `predict()` function in your Python model. Always double check that the outputs closely match your Keras model's.
+To predict: Import your model wrapper and run the `predict()` function. Always double check that the outputs closely match your Keras model's. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
 
-Nesting your input data with the wrong number of arrays/lists can sometimes cause the outputs to be complete incorrect; you may need to experiment with `predict[[sample]])` vs. `predict([sample])` for example.
+[See limitations and issues.](#Current-Limitations-and-Issues)
 
 ## Demo:
 <img src="https://raw.githubusercontent.com/ShaneSmiskol/Konverter/master/.media/konverter.gif?raw=true" width="913">
@@ -72,7 +93,7 @@ poetry install --no-dev
 
   When working with models using `softmax`, the dimensionality of the input data matters. For example, predicting on the same data with different input dimensionality sometimes results in different outputs:
   ```python
-  >>> model.predict([[1, 3, 5]])  # keras model
+  >>> model.predict([[1, 3, 5]])  # keras model, correct output
   array([[14.792273, 15.59787 , 15.543163]])
   >>> predict([[1, 3, 5]])  # Konverted model, wrong output
   array([[11.97839948, 18.09931636, 15.48014805]])
@@ -87,6 +108,6 @@ poetry install --no-dev
   ```
 
   Always double check that predictions are working correctly before deploying the model.
-- Batch prediction with SimpleRNN layers
+- Batch prediction with SimpleRNN (and possibly all RNN) layers
 
   Currently, the converted model has no way of determining if you're feeding a single prediction or a batch of predictions, and it will fail to give the correct output. Support will be added soon.
