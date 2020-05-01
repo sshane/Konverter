@@ -36,11 +36,11 @@ The project to do list can be [found here](https://github.com/ShaneSmiskol/Konve
 Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 
 ## Installation & Usage
-#### Installation:
+### Installation:
 ##### Install Konverter using pip:
 `pip install keras-konverter`
 
-#### Usage:
+### Usage:
 ##### Import Konverter and create an instance:
 ```python
 >>> from konverter import Konverter
