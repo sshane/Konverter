@@ -66,7 +66,7 @@ To predict: Import your model wrapper and run the `predict()` function. Always d
 
 ```python
 from examples.all_dense import predict
-predict(np.array([...]))
+predict(np.random.rand(200).astype(np.float32))
 ```
 
 [See limitations and issues.](#Current-Limitations-and-Issues)
