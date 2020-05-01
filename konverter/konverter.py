@@ -8,14 +8,14 @@ support = KonverterSupport()
 
 
 class Konverter:
-  def __init__(self, input_file, output_file, indent_spaces, verbose=True, use_watermark=True):
+  def __init__(self, input_model, output_file, indent_spaces, verbose=True, use_watermark=True):
     """
-    :param input_file: A preloaded Sequential Keras model
+    :param input_model: Either the the location of your tf.keras .h5 model, or a preloaded model
     :param output_file: The desired path and name of the output model files
     :param indent_spaces: The number of spaces to use for indentation
     :param use_watermark: To prepend a watermark comment to model wrapper
     """
-    self.input_file = input_file
+    self.input_model = input_model
     self.output_file = output_file
     self.indent = ' ' * indent_spaces
     self.verbose = verbose
@@ -143,15 +143,16 @@ class Konverter:
         raise Exception('Layer `{}` with activation `{}` not currently supported (check type or activation)'.format(layer.name, layer.info.activation.name))
 
   def load_model(self):
-    if os.path.exists(self.input_file):
-      self.model = load_model(self.input_file)
-      self.model_info = support.get_model_info(self.model)
-      if "tensorflow.python.keras.engine" not in str(type(self.model)):
-        raise Exception('Input model must be a Sequential tf.keras model, not {}'.format(type(self.model)))
-      elif not self.model_info.info.supported:
-        raise Exception('Model is `{}`, must be in {}'.format(self.model.name, support.attr_map(support.models, 'name')))
-    else:
-      raise Exception('It seems like the supplied model file doesn\'t exist!')
+    if isinstance(self.input_model, str):
+      if os.path.exists(self.input_model):
+        self.model = load_model(self.input_model)
+      else:
+        raise Exception('It seems like the supplied model file doesn\'t exist!')
+    self.model_info = support.get_model_info(self.model)
+    if "tensorflow.python.keras.engine" not in str(type(self.model)):
+      raise Exception('Input model must be a Sequential tf.keras model, not {}'.format(type(self.model)))
+    elif not self.model_info.info.supported:
+      raise Exception('Model is `{}`, must be in {}'.format(self.model.name, support.attr_map(support.models, 'name')))
 
   def print(self, msg):
     if self.verbose:
