@@ -19,7 +19,7 @@ def test_models():
   tests = {'Dense': {'max_mae': 1e-5, 'max_mse': 1e-11},
            'SimpleRNN': {'max_mae': 1e-5, 'max_mse': 1e-11},
            'GRU': {'max_mae': 1e-5, 'max_mse': 1e-11}}
-  if version.parse(tf.__version__) < version.parse('2'):
+  if version.parse(tf.__version__) < version.parse('2.0.0b0'):
     del tests['GRU']
   samples = 1000
   for test in tests:
