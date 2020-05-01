@@ -13,6 +13,7 @@ from utils.BASEDIR import BASEDIR
 from tests.build_test_models import create_model
 
 os.chdir(BASEDIR)
+konverter = Konverter()
 
 
 def test_models():
@@ -25,7 +26,7 @@ def test_models():
   for test in tests:
     print(f'\nCreating trained {test} model', flush=True)
     ker_model, data_shape = create_model(test)
-    Konverter(ker_model, f'tests/{test.lower()}_model', 2, verbose=False)
+    konverter.konvert(ker_model, f'tests/{test.lower()}_model', 2, verbose=False)
     kon_model = importlib.import_module(f'tests.{test.lower()}_model')
 
     x_train = np.random.uniform(0, 10, (samples, *data_shape[1:])).astype('float32')
