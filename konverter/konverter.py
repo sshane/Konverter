@@ -1,7 +1,7 @@
 from konverter.utils.model_attributes import Activations, Layers, watermark
 from konverter.utils.konverter_support import KonverterSupport
-from tensorflow.keras.models import load_model
 import numpy as np
+import importlib
 import os
 
 support = KonverterSupport()
@@ -145,7 +145,8 @@ class Konverter:
   def load_model(self):
     if isinstance(self.input_model, str):
       if os.path.exists(self.input_model):
-        self.model = load_model(self.input_model)
+        models = importlib.import_module('tensorflow.keras.models')
+        self.model = models.load_model(self.input_model)
       else:
         raise Exception('It seems like the supplied model file doesn\'t exist!')
     else:
