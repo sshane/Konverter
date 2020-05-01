@@ -43,9 +43,6 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 #### Usage:
 ##### Import Konverter and create an instance:
 ```python
-PS C:\Git\Konverter> python
-Python 3.7.5
-Type "help", "copyright", "credits" or "license" for more information.
 >>> from konverter import Konverter
 >>> konverter = Konverter()
 ```
