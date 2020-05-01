@@ -8,7 +8,7 @@ support = KonverterSupport()
 
 
 class Konverter:
-  def __init__(self, input_model, output_file, indent_spaces, verbose=True, use_watermark=True):
+  def __init__(self, input_model, output_file, indent_spaces=2, verbose=True, use_watermark=True):
     """
     :param input_model: Either the the location of your tf.keras .h5 model, or a preloaded model
     :param output_file: The desired path and name of the output model files
