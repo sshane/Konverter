@@ -1,5 +1,9 @@
+import os
 from konverter import Konverter
 from tensorflow.keras.models import load_model
+from utils.BASEDIR import BASEDIR
 
-model = load_model('repo_files/examples/gru_model.h5')
-kon = Konverter(model, 'repo_files/examples/gru_model.py', 2, verbose=True)
+os.chdir(BASEDIR)
+
+model = load_model('examples/testme.h5')
+kon = Konverter(model, 'examples/testme.py', 2, verbose=True)

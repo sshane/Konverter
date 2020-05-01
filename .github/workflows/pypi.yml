@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           poetry config virtualenvs.in-project true
-          poetry config repositories.test https://test.pypi.org/simple
+          poetry config repositories.test https://test.pypi.org/legacy
 
       - name: Publish package
         shell: bash
