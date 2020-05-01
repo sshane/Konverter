@@ -65,8 +65,8 @@ That's it! If your model is supported (check [Supported Keras Model Attributes](
 To predict: Import your model wrapper and run the `predict()` function. Always double check that the outputs closely match your Keras model's. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
 
 ```python
-from examples.all_dense import predict
 import numpy as np
+from examples.all_dense import predict
 predict(np.random.rand(200).astype(np.float32))
 ```
 
