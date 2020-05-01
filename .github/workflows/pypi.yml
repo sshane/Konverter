@@ -34,5 +34,5 @@ jobs:
 
       - name: Publish package
         shell: bash
-        run: poetry publish --build --repository test --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }}
+        run: poetry publish --build --repository keras_konverter --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }}
  
