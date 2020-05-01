@@ -58,7 +58,7 @@ Valid parameters:
   - `verbose`: To print status messages from Konverter
   - `use_watermark`: To prepend a watermark comment to model wrapper
 
-*Note: The model file will be saved as `f'{}.py'` and the weights will be saved as `f'{}_weights.npz'` in the same directory. Make sure you change the path inside the model wrapper if you move the files after Konversion.*
+*Note: The model file will be saved as `f'{output_file}.py'` and the weights will be saved as `f'{output_file}_weights.npz'` in the same directory. Make sure you change the path inside the model wrapper if you move the files after Konversion.*
 
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
