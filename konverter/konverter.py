@@ -145,8 +145,6 @@ class Konverter:
           to_print[idx].append(f'shape: {layer.info.weights[0].shape}')
         elif layer.info.weights is not None:
           to_print[idx].append(f'shape: {layer.info.weights.shape}')
-        # else:  # batch normalization
-        #   to_print[idx].append(f'shape: {layer.info.gamma.shape}')
 
       to_print[idx] = '  ' + '\n  '.join(to_print[idx])
     print('\n-----\n'.join(to_print))
