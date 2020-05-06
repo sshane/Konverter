@@ -36,6 +36,8 @@ class Konverter:
       self.print_model_architecture()
     self.remove_unused_layers()
     self.parse_output_file()
+    # wb = list(zip(*[[np.array(layer.info.weights), np.array(layer.info.biases)] for layer in self.layers]))
+    # np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
     self.build_konverted_model()
 
   def build_konverted_model(self):
@@ -78,15 +80,23 @@ class Konverter:
           rnn_function += '[-1]'
         model_builder['model'].append(rnn_function)
 
-      # work on functions: activations/simplernn
-      if layer.info.activation.string is not None:
-        if layer.info.activation.needs_function:  # don't add tanh/relu as a function
-          model_builder['functions'].append(layer.info.activation.string)
+      elif layer.name == Layers.BatchNormalization.name:
+        model_line = f'l{idx} = {layer.alias.lower()}({prev_output}, {idx})'
+        model_builder['model'].append(model_line)
 
-        if layer.info.is_recurrent:  # recurrent layers are specially handled here, need to improve this
-          func = layer.string.format(self.model_info.info.input_shape[1])
-          model_builder['functions'].append(func)
-          model_builder['functions'] += [act.string for act in layer.needed_activations if act.needs_function]
+      # work on functions: activations/layers
+      if layer.info.activation is not None:
+        if layer.info.activation.string is not None:
+          if layer.info.activation.needs_function:  # don't add tanh/relu as a function
+            model_builder['functions'].append(layer.info.activation.string)
+
+      if layer.info.is_recurrent:  # recurrent layers are specially handled here, need to improve this
+        func = layer.string.format(self.model_info.info.input_shape[1])
+        model_builder['functions'].append(func)
+        model_builder['functions'] += [act.string for act in layer.needed_activations if act.needs_function]
+
+      if layer.name == Layers.BatchNormalization.name:
+        model_builder['functions'].append(layer.string)
 
     model_builder['functions'] = set(model_builder['functions'])  # remove duplicates
     model_builder['model'].append(f'return l{len(self.layers) - 1}')
@@ -117,7 +127,7 @@ class Konverter:
       f.write(output.replace('\t', self.indent))
 
   def remove_unused_layers(self):
-    self.layers = [layer for layer in self.layers if layer.name not in support.attrs_without_activations]
+    self.layers = [layer for layer in self.layers if layer.name not in support.unused_layers]
 
   def parse_output_file(self):
     if self.output_file[-3:] == '.py':
@@ -133,8 +143,10 @@ class Konverter:
           to_print[idx].append(f'activation: {layer.info.activation.alias}')
         if layer.info.is_recurrent:
           to_print[idx].append(f'shape: {layer.info.weights[0].shape}')
-        else:
+        elif layer.info.weights is not None:
           to_print[idx].append(f'shape: {layer.info.weights.shape}')
+        # else:  # batch normalization
+        #   to_print[idx].append(f'shape: {layer.info.gamma.shape}')
 
       to_print[idx] = '  ' + '\n  '.join(to_print[idx])
     print('\n-----\n'.join(to_print))

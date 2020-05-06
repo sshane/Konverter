@@ -15,6 +15,8 @@ The goal of this tool is to provide a quick and easy way to execute Keras models
   - GRU
     - **Important:** The current GRU support is based on [`GRU v3`](https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU) in tf.keras 2.1.0. It will not work correctly with older versions of TensorFlow.
     - Batch prediction untested
+  - BatchNormalization
+    - Currently only supports dense layers
 - Activations:
   - ReLU
   - Sigmoid

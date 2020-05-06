@@ -8,7 +8,8 @@ class KonverterSupport:
     self.layers = [getattr(Layers, i) for i in dir(Layers) if '_' not in i]
     self.activations = [getattr(Activations, i) for i in dir(Activations) if '_' not in i]
 
-    self.attrs_without_activations = [Layers.Dropout.name, Activations.Linear.name]
+    self.attrs_without_activations = [Layers.Dropout.name, Activations.Linear.name, Layers.BatchNormalization.name]
+    self.unused_layers = [Layers.Dropout.name]
     self.recurrent_layers = [Layers.SimpleRNN.name, Layers.GRU.name]
     self.ignored_layers = [Layers.Dropout.name]
 
@@ -91,20 +92,32 @@ class KonverterSupport:
         layer_class.info.supported = True
     elif layer_class.info.is_ignored or is_linear:  # skip activation check if layer has no activation (eg. dropout or linear)
       layer_class.info.supported = True
+    elif layer_class.name in self.attrs_without_activations:
+      layer_class.info.supported = True
 
-    if not layer_class.info.supported or (not is_linear and not layer_class.info.has_activation):
+    # if not layer_class.info.supported or (not is_linear and not layer_class.info.has_activation):
+    #   return layer_class
+    if not layer_class.info.supported:
       return layer_class
 
-    wb = layer.get_weights()
+    try:
+      wb = layer.get_weights()
+      layer_class.info.has_weights = True  # TODO: test dropout with this
+    except:
+      return layer_class
+
     if len(wb) == 2:
-      weights, biases = wb
+      layer_class.info.weights = np.array(wb[0])
+      layer_class.info.biases = np.array(wb[1])
     elif len(wb) == 3 and layer_class.name in self.recurrent_layers:
-      *weights, biases = layer.get_weights()
+      layer_class.info.weights = np.array(wb[:2])  # input and recurrent weights
+      layer_class.info.biases = np.array(wb[-1])
       layer_class.info.returns_sequences = layer.return_sequences
       layer_class.info.is_recurrent = True
+    elif len(wb) == 4 and layer_class.name == Layers.BatchNormalization.name:
+      layer_class.info.weights = np.array(wb[:2])  # gamma, beta
+      layer_class.info.biases = np.array(wb[-2:])  # mean, std. dev
     else:
       raise Exception('Layer `{}` had an unsupported number of weights: {}'.format(layer_class.name, len(wb)))
 
-    layer_class.info.weights = np.array(weights)
-    layer_class.info.biases = np.array(biases)
     return layer_class

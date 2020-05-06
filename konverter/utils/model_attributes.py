@@ -73,6 +73,13 @@ class Layers:
     name = 'keras.layers.Dropout'
     alias = 'dropout'
 
+  class BatchNormalization(_BaseLayer):
+    name = 'keras.layers.BatchNormalization'
+    alias = 'batch_norm'
+    string = 'def batch_norm(x, idx):\n' \
+             '\tx = (x - b[idx][0]) / np.sqrt(b[idx][1])\n' \
+             '\tx = w[idx][0] * x + w[idx][1]\n\treturn x'
+
   class SimpleRNN(_BaseLayer):
     name = 'keras.layers.SimpleRNN'
     alias = 'SimpleRNN'
@@ -109,6 +116,7 @@ class BaseModelInfo:
 class BaseLayerInfo:
   supported = False
   has_activation = False
+  has_weights = False
   returns_sequences = False
   is_recurrent = False
   is_ignored = False
