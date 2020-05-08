@@ -39,8 +39,11 @@ def create_model(model_type):
 
     model = Sequential()
     model.add(GRU(128, input_shape=x_train.shape[1:], return_sequences=True, implementation=2))
+    model.add(BatchNormalization())
     model.add(GRU(64, return_sequences=True, implementation=2))
+    model.add(BatchNormalization())
     model.add(GRU(32, implementation=2))
+    model.add(BatchNormalization())
     model.add(Dense(16, activation='relu'))
     model.add(BatchNormalization())
     model.add(Dense(1, activation='linear'))
