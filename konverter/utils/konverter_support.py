@@ -45,6 +45,13 @@ class KonverterSupport:
         a.append(lyr.info.activation.name)
     return set(a)
 
+  def layer_names(self, ls):
+    """
+    :param ls: layers
+    :return: A set of all the layers used in the model
+    """
+    return set([lyr.name for lyr in ls])
+
   def attr_map(self, classes, attr):
     """Takes a list of (layer/activation/model) classes and returns the specified attribute from each"""
     return list(map(lambda cls: getattr(cls, attr), classes))
@@ -102,7 +109,7 @@ class KonverterSupport:
 
     try:
       wb = layer.get_weights()
-      layer_class.info.has_weights = True  # TODO: test dropout with this
+      layer_class.info.has_weights = True  # TODO: test dropout with this, TODO: unused, delete?
     except:
       return layer_class
 
@@ -115,8 +122,11 @@ class KonverterSupport:
       layer_class.info.returns_sequences = layer.return_sequences
       layer_class.info.is_recurrent = True
     elif len(wb) == 4 and layer_class.name == Layers.BatchNormalization.name:
-      layer_class.info.weights = np.array(wb[:2])  # gamma, beta
-      layer_class.info.biases = np.array(wb[-2:])  # mean, std. dev
+      layer_class.info.gamma = np.array(wb[0])
+      layer_class.info.beta = np.array(wb[1])
+      layer_class.info.mean = np.array(wb[2])
+      layer_class.info.std = np.array(wb[3])
+      layer_class.info.epsilon = layer.epsilon
     else:
       raise Exception('Layer `{}` had an unsupported number of weights: {}'.format(layer_class.name, len(wb)))
 

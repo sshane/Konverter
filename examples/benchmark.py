@@ -4,13 +4,13 @@ import time
 import os
 from tensorflow import keras
 from konverter import Konverter
-from examples.dense_model import predict
+from examples.batch_norm import predict
 
 os.chdir(BASEDIR)
-model = keras.models.load_model('examples/dense_model.h5')
+model = keras.models.load_model('examples/batch_norm.h5')
 # Konverter(model, output_file='examples/dense_model', tab_spaces=2)  # creates the numpy model from the keras model
 
-samples = np.random.uniform(0, 10, (10000, 5, 1)).astype('float32')
+samples = np.random.uniform(0, 10, (500, 1)).astype('float32')
 
 t = time.time()
 model.predict(samples)

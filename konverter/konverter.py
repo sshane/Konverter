@@ -36,8 +36,6 @@ class Konverter:
       self.print_model_architecture()
     self.remove_unused_layers()
     self.parse_output_file()
-    # wb = list(zip(*[[np.array(layer.info.weights), np.array(layer.info.biases)] for layer in self.layers]))
-    # np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
     self.build_konverted_model()
 
   def build_konverted_model(self):
@@ -51,6 +49,8 @@ class Konverter:
     # add section to load model weights and biases
     model_builder['load_weights'].append(f'wb = np.load(\'{self.output_file}_weights.npz\', allow_pickle=True)')
     model_builder['load_weights'].append('w, b = wb[\'wb\']')
+    if Layers.BatchNormalization.name in support.layer_names(self.layers):
+      model_builder['load_weights'].append('gamma, beta, mean, std, epsilon = wb[\'gbmse\']')
 
     # builds the model and adds needed activation functions
     for idx, layer in enumerate(self.layers):
@@ -111,13 +111,36 @@ class Konverter:
       self.print('Important: Since you are using Softmax, make sure that predictions are working correctly!')
 
   def save_model(self, model_builder):
-    wb = list(zip(*[[np.array(layer.info.weights), np.array(layer.info.biases)] for layer in self.layers]))
-    np.savez_compressed('{}_weights'.format(self.output_file), wb=wb)
+    wb = []
+    gbmse = []  # gamma, beta, mean, std, epsilon for batch normalization
+    for layer in self.layers:
+      w = layer.info.weights
+      b = layer.info.biases
+      wb.append([np.array(w), np.array(b)])
+
+      # TODO: right now, if layer is not batch norm, gamma, beta, etc. will be saved anyway with None values
+      # TODO: if layer is batch norm, the weights and biases will be saved with None values
+      # TODO: need to only save what is needed, and fix above indexes to increment only with their layer type (batch norm or not)
+      gamma = layer.info.gamma
+      beta = layer.info.beta
+      mean = layer.info.mean
+      std = layer.info.std
+      epsilon = layer.info.epsilon
+      gbmse.append([np.array(gamma), np.array(beta), np.array(mean), np.array(std), np.array(epsilon)])
+
+    wb = list(zip(*wb))
+    gbmse = list(zip(*gbmse))
+    kwargs = {'wb': wb}
+    if Layers.BatchNormalization.name in support.layer_names(self.layers):
+      kwargs['gbmse'] = gbmse
+    np.savez_compressed('{}_weights'.format(self.output_file), **kwargs)
 
     output = ['\n'.join(model_builder['imports']),  # eg. import numpy as np
-              '\n'.join(model_builder['load_weights']),  # loads weights and biases for predict()
-              '\n\n'.join(model_builder['functions']),  # houses the model helper functions
+              '\n'.join(model_builder['load_weights']),  # loads weights and biases for model
               '\n\t'.join(model_builder['model'])]  # builds the predict function
+    if len(model_builder['functions']) > 0:
+      output.insert(2, '\n\n'.join(model_builder['functions']))  # houses the model helper functions
+
     output = '\n\n'.join(output) + '\n'  # now combine all sections
 
     if self.use_watermark:

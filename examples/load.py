@@ -3,8 +3,7 @@ from tensorflow.keras.models import load_model
 from utils.BASEDIR import BASEDIR
 
 model = load_model('{}/examples/batch_norm.h5'.format(BASEDIR))
-print(model.predict([[2]])[0][0])
+print(model.predict([[0.5]]))
 
-wb = [l.get_weights() for l in model.layers]
 
 # exit()

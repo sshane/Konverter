@@ -77,8 +77,8 @@ class Layers:
     name = 'keras.layers.BatchNormalization'
     alias = 'batch_norm'
     string = 'def batch_norm(x, idx):\n' \
-             '\tx = (x - b[idx][0]) / np.sqrt(b[idx][1])\n' \
-             '\tx = w[idx][0] * x + w[idx][1]\n\treturn x'
+             '\tx = (x - mean[idx]) / np.sqrt(std[idx] + epsilon[idx])\n' \
+             '\tx = gamma[idx] * x + beta[idx]\n\treturn x'
 
   class SimpleRNN(_BaseLayer):
     name = 'keras.layers.SimpleRNN'
@@ -124,6 +124,12 @@ class BaseLayerInfo:
   activation = None
   weights = None
   biases = None
+
+  gamma = None
+  beta = None
+  mean = None
+  std = None
+  epsilon = None
 
 
 def code_converter(indentation_spaces=2):
