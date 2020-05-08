@@ -28,8 +28,11 @@ def create_model(model_type):
 
     model = Sequential()
     model.add(SimpleRNN(128, return_sequences=True, input_shape=x_train.shape[1:]))
+    model.add(BatchNormalization())
     model.add(SimpleRNN(64, return_sequences=True))
+    model.add(BatchNormalization())
     model.add(SimpleRNN(32))
+    model.add(BatchNormalization())
     model.add(Dense(16, activation='relu'))
     model.add(BatchNormalization())
     model.add(Dense(1, activation='linear'))
