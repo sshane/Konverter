@@ -109,7 +109,8 @@ class KonverterSupport:
 
     try:
       wb = layer.get_weights()
-      layer_class.info.has_weights = True  # TODO: test dropout with this, TODO: unused, delete?
+      if len(wb) == 0:
+        return layer_class
     except:
       return layer_class
 

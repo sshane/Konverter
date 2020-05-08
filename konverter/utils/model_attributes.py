@@ -116,7 +116,6 @@ class BaseModelInfo:
 class BaseLayerInfo:
   supported = False
   has_activation = False
-  has_weights = False
   returns_sequences = False
   is_recurrent = False
   is_ignored = False
