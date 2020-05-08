@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.layers import Dense, SimpleRNN, GRU
+from tensorflow.keras.layers import Dense, SimpleRNN, GRU, BatchNormalization
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.backend import clear_session
 
@@ -14,9 +14,13 @@ def create_model(model_type):
 
     model = Sequential()
     model.add(Dense(128, activation='relu', input_shape=x_train.shape[1:]))
+    model.add(BatchNormalization())
     model.add(Dense(64, activation='tanh'))
+    model.add(BatchNormalization())
     model.add(Dense(32, activation='relu'))
+    model.add(BatchNormalization())
     model.add(Dense(16, activation='tanh'))
+    model.add(BatchNormalization())
     model.add(Dense(1, activation='linear'))
   elif model_type == 'SimpleRNN':
     x_train = np.random.uniform(0, 10, (samples, 10, 4))
@@ -27,6 +31,7 @@ def create_model(model_type):
     model.add(SimpleRNN(64, return_sequences=True))
     model.add(SimpleRNN(32))
     model.add(Dense(16, activation='relu'))
+    model.add(BatchNormalization())
     model.add(Dense(1, activation='linear'))
   elif model_type == 'GRU':
     x_train = np.random.uniform(0, 10, (samples, 10, 4))
@@ -37,6 +42,7 @@ def create_model(model_type):
     model.add(GRU(64, return_sequences=True, implementation=2))
     model.add(GRU(32, implementation=2))
     model.add(Dense(16, activation='relu'))
+    model.add(BatchNormalization())
     model.add(Dense(1, activation='linear'))
   else:
     raise Exception('Unknown model type: {}'.format(model_type))
