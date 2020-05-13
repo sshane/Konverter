@@ -4,7 +4,7 @@ class Models:
     alias = None
 
   class Sequential(_BaseModel):
-    name = 'keras.models.Sequential'
+    name = 'keras.Sequential'
     alias = 'sequential'
 
   class Unsupported(_BaseModel):
