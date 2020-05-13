@@ -7,6 +7,10 @@ class Models:
     name = 'keras.Sequential'
     alias = 'sequential'
 
+  class SequentialOld(_BaseModel):
+    name = 'keras.models.Sequential'
+    alias = 'sequential'
+
   class Unsupported(_BaseModel):
     pass
 
