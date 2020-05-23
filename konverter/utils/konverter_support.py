@@ -59,14 +59,14 @@ class KonverterSupport:
   def get_model_info(self, model):
     name = getattr(model, '_keras_api_names_v1')[0]
     model_class = self.get_class_from_name(name, 'models')
+    model_class.info = BaseModelInfo()
     if not model_class:
       model_class = Models.Unsupported()
       model_class.name = name
-      return model_class
+    else:
+      model_class.info.supported = True
+      model_class.info.input_shape = model.input_shape
 
-    model_class.info = BaseModelInfo()
-    model_class.info.input_shape = model.input_shape
-    model_class.info.supported = True
     return model_class
 
   def get_layer_info(self, layer):
@@ -74,11 +74,11 @@ class KonverterSupport:
     if not len(name):
       name = getattr(layer, '_keras_api_names')
     layer_class = self.get_class_from_name(name[0], 'layers')  # assume only one name
+    layer_class.info = BaseLayerInfo()
     if not layer_class:
       layer_class = Layers.Unsupported()  # add activation below to raise exception with
       layer_class.name = name
 
-    layer_class.info = BaseLayerInfo()
     layer_class.info.is_ignored = layer_class.name in self.ignored_layers
 
     is_linear = False
