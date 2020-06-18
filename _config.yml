@@ -1,1 +1,3 @@
 theme: jekyll-theme-architect
+title: Welcome to Konverter!
+description: Easily convert your Keras models into pure Python + NumPy.
