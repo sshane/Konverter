@@ -118,7 +118,7 @@ class KonverterSupport:
       layer_class.info.weights = np.array(wb[0])
       layer_class.info.biases = np.array(wb[1])
     elif len(wb) == 3 and layer_class.name in self.recurrent_layers:
-      layer_class.info.weights = np.array(wb[:2])  # input and recurrent weights
+      layer_class.info.weights = np.array(wb[:2], dtype=np.object)  # input and recurrent weights
       layer_class.info.biases = np.array(wb[-1])
       layer_class.info.returns_sequences = layer.return_sequences
       layer_class.info.is_recurrent = True

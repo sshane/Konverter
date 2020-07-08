@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Dense, SimpleRNN, GRU, BatchNormalization
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.backend import clear_session
 
+WRITE_KERAS_MODELS = False
 
 def create_model(model_type):
   clear_session()
@@ -55,4 +56,6 @@ def create_model(model_type):
 
   model.compile(optimizer='adam', loss='mse')
   model.fit(x_train, y_train, batch_size=32, epochs=epochs, verbose=0)
+  if WRITE_KERAS_MODELS:
+    model.save('tests/{}.h5'.format(model_type))
   return model, x_train.shape

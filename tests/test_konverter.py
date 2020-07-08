@@ -4,16 +4,15 @@ warnings.filterwarnings('ignore', category=DeprecationWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-import numpy as np
+import konverter
 import importlib
+import numpy as np
 import tensorflow as tf
 from packaging import version
-from konverter import Konverter
 from utils.BASEDIR import BASEDIR
 from tests.build_test_models import create_model
 
 os.chdir(BASEDIR)
-konverter = Konverter()
 
 
 def test_models():
@@ -36,7 +35,7 @@ def test_models():
     print('Comparing model outputs\n', flush=True)
     for sample in x_train:
       konverter_preds.append(kon_model.predict(sample)[0])
-      keras_preds.append(ker_model.predict_on_batch([[sample]])[0][0])
+      keras_preds.append(ker_model.predict_on_batch(np.array([sample]))[0][0])
 
     mae = np.abs(np.subtract(keras_preds, konverter_preds)).mean()
     mse = np.square(np.subtract(keras_preds, konverter_preds)).mean()
