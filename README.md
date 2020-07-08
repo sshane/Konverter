@@ -13,7 +13,7 @@ The goal of this tool is to provide a quick and easy way to execute Keras models
   - SimpleRNN
     - Batch predictions do not currently work correctly.
   - GRU
-    - **Important:** The current GRU support is based on [`GRU v3`](https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU) in tf.keras 2.1.0. It will not work correctly with older versions of TensorFlow if not using `implementation=2`.
+    - **Important:** The current GRU support is based on [`GRU v3`](https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU) in tf.keras 2.1.0. It will not work correctly with older versions of TensorFlow if not using [`implementation=2`](https://github.com/ShaneSmiskol/Konverter/blob/master/tests/build_test_models.py#L47).
     - Batch prediction untested
   - BatchNormalization
     - Works with all supported layers
