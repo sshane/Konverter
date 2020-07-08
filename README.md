@@ -66,12 +66,12 @@ All parameters with defaults: `konverter.konvert(input_model, output_file=None, 
 ---
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
-To predict: Import your model wrapper and run the `predict()` function. ❗**❗Always double check that the outputs closely match your Keras model's❗**❗. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
+To predict: Import your model wrapper and run the `predict()` function. **❗Always double check that the outputs closely match your Keras model's❗** Automatic verification will come soon. **For the integrity of the predictions, always make sure your input is a `np.float32` array.**
 
 ```python
 import numpy as np
 from examples.test_model import predict
-predict(np.random.rand(200).astype(np.float32))
+predict([np.random.rand(3).astype(np.float32)])
 ```
 
 [See limitations and issues.](#Current-Limitations-and-Issues)
@@ -82,7 +82,7 @@ predict(np.random.rand(200).astype(np.float32))
 
 ## Dependencies
 Thanks to [@apiad](https://github.com/apiad) you can now use [Poetry](https://github.com/python-poetry/poetry) to install all the needed dependencies for this tool! However the requirements are a pretty short list:
-- It seems most versions of TensorFlow that include Keras work perfectly fine. Tested from 1.14 to 2.1.0 using Actions and no issues have occurred.
+- It seems most versions of TensorFlow that include Keras work perfectly fine. Tested from 1.14 to 2.1.0 using Actions and no issues have occurred. **(Make sure you use implementation 2/v3 with GRU layers if not on TF 2.x)**
   - **Important**: You must create your models with tf.keras currently (not keras)
 - Python >= 3.6 (for the glorious f-strings!)
 
