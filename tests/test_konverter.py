@@ -25,7 +25,7 @@ def test_models():
   for test in tests:
     print(f'\nCreating trained {test} model', flush=True)
     ker_model, data_shape = create_model(test)
-    konverter.konvert(ker_model, f'tests/{test.lower()}_model', 2, verbose=False)
+    konverter.konvert(ker_model, f'tests/{test.lower()}_model', silent=True)
     kon_model = importlib.import_module(f'tests.{test.lower()}_model')
 
     x_train = np.random.uniform(0, 10, (samples, *data_shape[1:])).astype('float32')
