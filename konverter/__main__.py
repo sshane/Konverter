@@ -3,7 +3,7 @@ import argparse
 import konverter
 from konverter.utils.general import success, info, warning, error, COLORS, color_logo, blue_grad
 
-KONVERTER_VERSION = "v0.1.8"  # fixme: unify this
+KONVERTER_VERSION = "v0.2"  # fixme: unify this
 KONVERTER_LOGO_COLORED = color_logo(KONVERTER_VERSION)
 
 class KonverterCLI:
