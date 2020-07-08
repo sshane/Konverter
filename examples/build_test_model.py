@@ -29,7 +29,7 @@ model.add(Dense(3, activation='softmax'))
 model.compile(optimizer=Adam(lr=0.003, amsgrad=True), loss='categorical_crossentropy')
 model.fit(x_train, y_train, batch_size=64, epochs=20, verbose=1, validation_split=0.2)
 
-model.save('{}/examples/batch_norm.h5'.format(BASEDIR))
+model.save('{}/examples/test_model.h5'.format(BASEDIR))
 print(model.predict([[4.5, 4.5, 9]]).tolist())
 print('Saved!')
 # exit()

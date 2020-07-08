@@ -41,15 +41,15 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 ### Install Konverter using pip:
 `pip install keras-konverter`
 
-### Konverting using the CLI: 🎹
-`konverter ./My Models/my_model.h5 ./My Models/my_model.py"`  (py suffix is optional)
+### Konverting using the CLI: ⌨🖥
+`konverter examples/test_model.h5 examples/test_model.py`  (py suffix is optional)
 
 Type `konverter` to get all possible arguments and flags!
 
-Arguments:
-- `input_model`: Either the the location of your tf.keras .h5 model, or a preloaded Sequential model if using with Python. This is required
-- `output_file`: Optional file path for your output model, along with the weights file. Default is same name, same directory
-- Flags:
+- Arguments 💢:
+  - `input_model`: Either the the location of your tf.keras .h5 model, or a preloaded Sequential model if using with Python. This is required
+  - `output_file`: Optional file path for your output model, along with the weights file. Default is same name, same directory
+- Flags 🎌:
   - `--indent, -i`: How many spaces to use for indentation, default is 2
   - `--silent, -i`: Whether you want Konverter to silently Konvert
   - `--no-watermark, -nw`: Removes the watermark prepended to the output model file
@@ -58,18 +58,19 @@ Arguments:
 All parameters with defaults: `konverter.konvert(input_model, output_file=None, indent=2, silent=False, no_watermark=False, tf_verbose=False)`
 ```python
 >>> import konverter
->>> konverter.konvert('examples/all_dense.h5', output_file='examples/all_dense.py')
+>>> konverter.konvert('examples/test_model.h5', output_file='examples/test_model.py')
 ```
 
 *Note: The model file will be saved as `f'{output_file}.py'` and the weights will be saved as `f'{output_file}_weights.npz'` in the same directory.* ***Make sure to change the path inside the model wrapper if you move the files after Konversion.***
 
+---
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
 To predict: Import your model wrapper and run the `predict()` function. ‼**Always double check that the outputs closely match your Keras model's**‼. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
 
 ```python
 import numpy as np
-from examples.all_dense import predict
+from examples.test_model import predict
 predict(np.random.rand(200).astype(np.float32))
 ```
 
