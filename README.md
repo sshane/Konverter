@@ -41,7 +41,7 @@ Benchmarks can be found in [BENCHMARKS.md](BENCHMARKS.md).
 ### Install Konverter using pip:
 `pip install keras-konverter`
 
-### Konverting using the CLI: ⌨🖥
+### Konverting using the CLI: 🖥
 `konverter examples/test_model.h5 examples/test_model.py`  (py suffix is optional)
 
 Type `konverter` to get all possible arguments and flags!
@@ -58,7 +58,7 @@ Type `konverter` to get all possible arguments and flags!
 All parameters with defaults: `konverter.konvert(input_model, output_file=None, indent=2, silent=False, no_watermark=False, tf_verbose=False)`
 ```python
 >>> import konverter
->>> konverter.konvert('examples/test_model.h5', output_file='examples/test_model.py')
+>>> konverter.konvert('examples/test_model.h5', output_file='examples/test_model')
 ```
 
 *Note: The model file will be saved as `f'{output_file}.py'` and the weights will be saved as `f'{output_file}_weights.npz'` in the same directory.* ***Make sure to change the path inside the model wrapper if you move the files after Konversion.***
@@ -66,7 +66,7 @@ All parameters with defaults: `konverter.konvert(input_model, output_file=None, 
 ---
 That's it! If your model is supported (check [Supported Keras Model Attributes](#Supported-Keras-Model-Attributes)), then your newly converted Konverter model should be ready to go.
 
-To predict: Import your model wrapper and run the `predict()` function. ‼**Always double check that the outputs closely match your Keras model's**‼. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
+To predict: Import your model wrapper and run the `predict()` function. ❗**❗Always double check that the outputs closely match your Keras model's❗**❗. Automatic verification will come soon. **For safety, always make sure your input is a `np.float32` array.**
 
 ```python
 import numpy as np
