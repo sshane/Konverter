@@ -55,7 +55,8 @@ class Konverter:
     model_builder = {'imports': ['import numpy as np'],
                      'functions': [],
                      'load_weights': [],
-                     'model': ['def predict(x):']}
+                     'model': ['def predict(x):',
+                               'x = np.array(x, dtype=np.float32)']}  # convert input to float32
 
     # add section to load model weights and biases
     model_builder['load_weights'].append(f'wb = np.load(\'{self.output_file}_weights.npz\', allow_pickle=True)')
@@ -140,7 +141,7 @@ class Konverter:
 
     wb = list(zip(*wb))
     gbmse = list(zip(*gbmse))
-    kwargs = {'wb': np.array(wb, dtype=np.object)}
+    kwargs = {'wb': np.array(wb)}
 
     if Layers.BatchNormalization.name in support.layer_names(self.layers):
       kwargs['gbmse'] = np.array(gbmse, dtype=np.object)
