@@ -54,6 +54,8 @@ Type `konverter` to get all possible arguments and flags!
   - `--silent, -i`: Whether you want Konverter to silently Konvert
   - `--no-watermark, -nw`: Removes the watermark prepended to the output model file
 
+<img src="/.media/konverter.png" height="300" />
+
 ### Konverting programmatically: 🤖
 All parameters with defaults: `konverter.konvert(input_model, output_file=None, indent=2, silent=False, no_watermark=False, tf_verbose=False)`
 ```python
