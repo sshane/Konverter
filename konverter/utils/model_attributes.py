@@ -21,6 +21,7 @@ class Activations:
       ex. activation in string format
     To add new activations, use the code_converter function and add them here!
   """
+
   class _BaseActivation:
     name = None
     alias = None
@@ -71,6 +72,7 @@ class Layers:
       ex. function in string format
     To add new layers, use the code_converter function and add them here!
   """
+
   class _BaseLayer:
     name = None
     alias = None
