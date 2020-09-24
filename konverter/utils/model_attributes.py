@@ -38,7 +38,7 @@ class Activations:
     name = 'keras.layers.LeakyReLU'
     alias = 'LeakyReLU'
     string = 'np.where({0} > 0, {0}, {0} * {1})'
-    alpha = 0.9  # default from tensorflow
+    alpha = 0.3  # default from tensorflow
     needs_function = False
 
   class Sigmoid(_BaseActivation):
