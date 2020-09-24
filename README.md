@@ -64,6 +64,7 @@ All parameters with defaults: `konverter.konvert(input_model, output_file=None, 
 >>> konverter.konvert('examples/test_model.h5', output_file='examples/test_model')
 ```
 
+
 *Note: The model file will be saved as `f'{output_file}.py'` and the weights will be saved as `f'{output_file}_weights.npz'` in the same directory.* ***Make sure to change the path inside the model wrapper if you move the files after Konversion.***
 
 ---
