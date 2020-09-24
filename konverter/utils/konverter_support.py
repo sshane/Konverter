@@ -23,6 +23,10 @@ class KonverterSupport:
     for attr_class in attrs:
       if name == attr_class.name:
         return attr_class()  # new instance of class
+    if search_in == 'activations':  # not found
+      base = Activations.Unsupported()
+      base.name = name
+      return base
     return False
 
   def in_models(self, name):
@@ -94,6 +98,9 @@ class KonverterSupport:
         raise Exception('None or multiple activations?')
 
     if layer_class.info.has_activation:
+      if layer_class.info.activation.name == 'keras.layers.LeakyReLU':  # set alpha
+        layer_class.info.activation.alpha = round(float(layer.activation.alpha), 5)
+
       # check layer activation against this layer's supported activations
       if layer_class.info.activation.name in self.attr_map(layer_class.supported_activations, 'name'):
         layer_class.info.supported = True

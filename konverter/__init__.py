@@ -76,7 +76,11 @@ class Konverter:
           if layer.info.activation.needs_function:
             lyr_w_act = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
           else:  # eg. tanh or relu
-            lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}')
+            if layer.info.activation.alpha is None:
+              lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}')
+            else:  # custom alpha for leakyrelu
+              lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}', layer.info.activation.alpha)
+
             lyr_w_act = f'l{idx} = {lyr_w_act}'
           model_builder['model'].append(lyr_w_act)
 
@@ -212,8 +216,11 @@ class Konverter:
     if isinstance(self.input_model, str):
       self.input_model = self.input_model.replace('\\', '/')
       if os.path.exists(self.input_model):
-        models = importlib.import_module('tensorflow.keras.models')
-        self.model = models.load_model(self.input_model)
+        load_model = importlib.import_module('tensorflow.keras.models').load_model  # only import when needed
+
+        # FIXME: for some reason tf 2 can't load models with LeakyReLU without custom_objects
+        custom_leakyrelu = importlib.import_module('tensorflow.keras.layers').LeakyReLU
+        self.model = load_model(self.input_model, custom_objects={'LeakyReLU': custom_leakyrelu})
       else:
         raise Exception(error('The supplied model file path doesn\'t exist!', ret=True))
     else:

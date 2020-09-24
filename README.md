@@ -19,6 +19,7 @@ The goal of this tool is to provide a quick and easy way to execute Keras models
     - Works with all supported layers
 - Activations:
   - ReLU
+  - LeakyReLU (supports custom alphas)
   - Sigmoid
   - Softmax
   - Tanh
@@ -84,7 +85,7 @@ predict([np.random.rand(3).astype(np.float32)])
 
 ## Dependencies
 Thanks to [@apiad](https://github.com/apiad) you can now use [Poetry](https://github.com/python-poetry/poetry) to install all the needed dependencies for this tool! However the requirements are a pretty short list:
-- It seems most versions of TensorFlow that include Keras work perfectly fine. Tested from 1.14 to 2.1.0 using Actions and no issues have occurred. **(Make sure you use implementation 2/v3 with GRU layers if not on TF 2.x)**
+- It seems most versions of TensorFlow that include Keras work perfectly fine. Tested from 1.14 to 2.2 using Actions and no issues have occurred. **(Make sure you use implementation 2/v3 with GRU layers if not on TF 2.x)**
   - **Important**: You must create your models with tf.keras currently (not keras)
 - Python >= 3.6 (for the glorious f-strings!)
 
