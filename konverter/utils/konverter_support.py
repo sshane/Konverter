@@ -23,6 +23,11 @@ class KonverterSupport:
     for attr_class in attrs:
       if name == attr_class.name:
         return attr_class()  # new instance of class
+    # not found
+    if search_in == 'activations':
+      base = Activations.Unsupported()
+      base.name = name
+      return base
     return False
 
   def in_models(self, name):
@@ -82,10 +87,16 @@ class KonverterSupport:
     layer_class.info.is_ignored = layer_class.name in self.ignored_layers
 
     is_linear = False
+    print()
     if layer_class.name not in self.attrs_without_activations:
+      print(layer.name)
+      print(dir(layer.activation))
+      print(layer.activation)
       activation = getattr(layer.activation, '_keras_api_names')
       if len(activation) == 1:
         layer_class.info.activation = self.get_class_from_name(activation[0], 'activations')
+        print(activation)
+        print(layer_class.info.activation)
         if layer_class.info.activation.name not in self.attrs_without_activations:
           layer_class.info.has_activation = True
         else:

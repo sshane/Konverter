@@ -21,37 +21,46 @@ class Activations:
       ex. activation in string format
     To add new activations, use the code_converter function and add them here!
   """
-  class _BaseAcivation:
+  class _BaseActivation:
     name = None
     alias = None
     string = None
     needs_function = True
 
-  class ReLU(_BaseAcivation):
+  class ReLU(_BaseActivation):
     name = 'keras.activations.relu'
     alias = 'relu'
     string = 'np.maximum(0, {})'
     needs_function = False
 
-  class Sigmoid(_BaseAcivation):
+  class LeakyReLU(_BaseActivation):
+    name = 'keras.layers.LeakyReLU'
+    alias = 'LeakyReLU'
+    string = 'np.where({0} > 0, {0}, {0} * 0.01)'
+    needs_function = False
+
+  class Sigmoid(_BaseActivation):
     name = 'keras.activations.sigmoid'
     alias = 'sigmoid'
     string = 'def sigmoid(x):\n\treturn 1 / (1 + np.exp(-x))'
 
-  class Softmax(_BaseAcivation):
+  class Softmax(_BaseActivation):
     name = 'keras.activations.softmax'
     alias = 'softmax'
     string = 'def softmax(x):\n\treturn np.exp(x) / np.sum(np.exp(x), axis=0)'
 
-  class Tanh(_BaseAcivation):
+  class Tanh(_BaseActivation):
     name = 'keras.activations.tanh'
     alias = 'tanh'
     string = 'np.tanh({})'  # don't define a function if you don't want your string added to file as a function
     needs_function = False
 
-  class Linear(_BaseAcivation):
+  class Linear(_BaseActivation):
     name = 'keras.activations.linear'
     alias = 'linear'
+
+  class Unsupported(_BaseActivation):  # propogated with act info and returned to Konverter if act is unsupported
+    pass
 
 
 class Layers:
@@ -70,7 +79,7 @@ class Layers:
   class Dense(_BaseLayer):
     name = 'keras.layers.Dense'
     alias = 'dense'
-    supported_activations = [Activations.ReLU, Activations.Sigmoid, Activations.Softmax, Activations.Tanh, Activations.Linear]
+    supported_activations = [Activations.ReLU, Activations.Sigmoid, Activations.Softmax, Activations.Tanh, Activations.Linear, Activations.LeakyReLU]
     string = 'np.dot({}, w[{}]) + b[{}]'  # n0 is the previous layer, n1 is weight, n2 is bias
 
   class Dropout(_BaseLayer):
