@@ -76,9 +76,9 @@ class Konverter:
           if layer.info.activation.needs_function:
             lyr_w_act = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
           else:  # eg. tanh or relu
-            if layer.info.activation.alpha is None:  # for leakyrelu
+            if layer.info.activation.alpha is None:
               lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}')
-            else:
+            else:  # custom alpha for leakyrelu
               lyr_w_act = layer.info.activation.string.lower().format(f'l{idx}', layer.info.activation.alpha)
 
             lyr_w_act = f'l{idx} = {lyr_w_act}'
