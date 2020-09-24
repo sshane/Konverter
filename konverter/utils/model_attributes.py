@@ -25,6 +25,7 @@ class Activations:
     name = None
     alias = None
     string = None
+    alpha = None
     needs_function = True
 
   class ReLU(_BaseActivation):
@@ -36,7 +37,8 @@ class Activations:
   class LeakyReLU(_BaseActivation):
     name = 'keras.layers.LeakyReLU'
     alias = 'LeakyReLU'
-    string = 'np.where({0} > 0, {0}, {0} * 0.01)'
+    string = 'np.where({0} > 0, {0}, {0} * {1})'
+    alpha = 0.9  # default from tensorflow
     needs_function = False
 
   class Sigmoid(_BaseActivation):
@@ -137,7 +139,7 @@ class BaseLayerInfo:
   weights = None
   biases = None
 
-  gamma = None
+  gamma = None  # for BN
   beta = None
   mean = None
   std = None

@@ -87,16 +87,10 @@ class KonverterSupport:
     layer_class.info.is_ignored = layer_class.name in self.ignored_layers
 
     is_linear = False
-    print()
     if layer_class.name not in self.attrs_without_activations:
-      print(layer.name)
-      print(dir(layer.activation))
-      print(layer.activation)
       activation = getattr(layer.activation, '_keras_api_names')
       if len(activation) == 1:
         layer_class.info.activation = self.get_class_from_name(activation[0], 'activations')
-        print(activation)
-        print(layer_class.info.activation)
         if layer_class.info.activation.name not in self.attrs_without_activations:
           layer_class.info.has_activation = True
         else:
@@ -105,6 +99,9 @@ class KonverterSupport:
         raise Exception('None or multiple activations?')
 
     if layer_class.info.has_activation:
+      if layer_class.info.activation.name == 'keras.layers.LeakyReLU':  # set alpha
+        layer_class.info.activation.alpha = round(float(layer.activation.alpha), 5)
+
       # check layer activation against this layer's supported activations
       if layer_class.info.activation.name in self.attr_map(layer_class.supported_activations, 'name'):
         layer_class.info.supported = True
