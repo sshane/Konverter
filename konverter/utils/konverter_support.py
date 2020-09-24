@@ -23,8 +23,7 @@ class KonverterSupport:
     for attr_class in attrs:
       if name == attr_class.name:
         return attr_class()  # new instance of class
-    # not found
-    if search_in == 'activations':
+    if search_in == 'activations':  # not found
       base = Activations.Unsupported()
       base.name = name
       return base
