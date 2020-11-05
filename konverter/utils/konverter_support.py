@@ -87,7 +87,12 @@ class KonverterSupport:
 
     is_linear = False
     if layer_class.name not in self.attrs_without_activations:
-      activation = getattr(layer.activation, '_keras_api_names')
+      if hasattr(layer.activation, '_keras_api_names'):
+        activation = getattr(layer.activation, '_keras_api_names')
+      else:  # fixme: TF 2.3 is missing _keras_api_names
+        activation = 'keras.activations.' + getattr(layer.activation, '__name__')
+        activation = (activation,)  # fixme: expects this as a tuple
+
       if len(activation) == 1:
         layer_class.info.activation = self.get_class_from_name(activation[0], 'activations')
         if layer_class.info.activation.name not in self.attrs_without_activations:
