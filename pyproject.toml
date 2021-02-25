@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "keras-konverter"
-version = "0.2.3"
+version = "0.2.4"
 description = "A tool to convert simple Keras models to pure Python + NumPy"
 readme = "README.md"
 repository = "https://github.com/ShaneSmiskol/Konverter"
