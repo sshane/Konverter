@@ -17,17 +17,17 @@ class KonverterSupport:
     """
     :param name: A name of an attribute, ex. keras.layers.Dense, keras.activations.relu
     :param search_in: A class list to search, ex. 'layers', 'models'
-    :return: A class object of the attribute name, or False if not found/supported
+    :return: A class object of the attribute name, or an empty Unsupported class if not found/supported
     """
     attrs = getattr(self, search_in, None)
     for attr_class in attrs:
       if name == attr_class.name:
         return attr_class()  # new instance of class
-    if search_in == 'activations':  # not found
-      base = Activations.Unsupported()
-      base.name = name
-      return base
-    return False
+    # Not found, unsupported. This code finds the type of class we're looking for and creates a new instance of its Unsupported sub-class
+    # For example if search_in is 'activations' then it returns Activations.Unsupported()
+    base = globals()[search_in.title()].Unsupported()
+    base.name = name
+    return base
 
   def in_models(self, name):
     return name in [mdl.name for mdl in self.models]
