@@ -19,12 +19,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install poetry
-        shell: bash
-        run: |
-          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
-          python get-poetry.py --preview -y
-          echo "::set-env name=PATH::$HOME/.poetry/bin:$PATH"
+      - name: Python Poetry Action
+        uses: abatilo/actions-poetry@v2.1.0
 
       - name: Configure poetry
         shell: bash
