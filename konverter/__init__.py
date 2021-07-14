@@ -212,8 +212,6 @@ class Konverter:
         next_layer = self.model.layers[idx + 1]
 
       layer = support.get_layer_info(layer, next_layer)
-      # if layer.name == 'keras.layers.Dense':
-      #   raise Exception("STOP")
       if layer.info.supported:
         self.layers.append(layer)
       else:
