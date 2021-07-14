@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.layers import Dense, SimpleRNN, GRU, BatchNormalization
+from tensorflow.keras.layers import Dense, SimpleRNN, GRU, BatchNormalization, InputLayer, Activation
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.backend import clear_session
 
@@ -14,9 +14,12 @@ def create_model(model_type):
     y_train = (np.mean(x_train, axis=1) ** 2) / 2  # half of squared mean of sample
 
     model = Sequential()
-    model.add(Dense(128, activation='relu', input_shape=x_train.shape[1:]))
+    model.add(InputLayer(input_shape=x_train.shape[1:]))
+    model.add(Dense(128))
+    model.add(Activation(activation='relu'))
     model.add(BatchNormalization())
-    model.add(Dense(64, activation='tanh'))
+    model.add(Dense(64))
+    model.add(Activation(activation='tanh'))
     model.add(BatchNormalization())
     model.add(Dense(32, activation='relu'))
     model.add(BatchNormalization())
