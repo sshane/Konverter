@@ -90,6 +90,14 @@ class Layers:
     name = 'keras.layers.Dropout'
     alias = 'dropout'
 
+  class InputLayer(_BaseLayer):
+    name = 'keras.layers.InputLayer'
+    alias = 'InputLayer'
+
+  class Activation(_BaseLayer):
+    name = 'keras.layers.Activation'
+    alias = 'Activation'
+
   class BatchNormalization(_BaseLayer):
     name = 'keras.layers.BatchNormalization'
     alias = 'batch_norm'
@@ -123,6 +131,12 @@ class Layers:
 
   class Unsupported(_BaseLayer):  # propogated with layer info and returned to Konverter if layer is unsupported
     pass
+
+
+# LAYERS_NO_ACTIVATION = [Layers.Dropout.name, Layers.InputLayer.name, Activations.Linear.name, Layers.BatchNormalization.name]
+LAYERS_NO_ACTIVATION = [Layers.Dropout.name, Layers.InputLayer.name, Layers.BatchNormalization.name]
+LAYERS_IGNORED = [Layers.Dropout.name, Layers.InputLayer.name, Layers.Activation.name]
+LAYERS_RECURRENT = [Layers.SimpleRNN.name, Layers.GRU.name]
 
 
 class BaseModelInfo:
