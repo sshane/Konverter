@@ -1,4 +1,4 @@
-from konverter.utils.model_attributes import Activations, Layers, watermark
+from konverter.utils.model_attributes import Activations, Layers, LAYERS_IGNORED, watermark
 from konverter.utils.konverter_support import KonverterSupport
 from konverter.utils.general import success, error, info, warning, COLORS
 import numpy as np
@@ -45,7 +45,7 @@ class Konverter:
     self.get_layers()
     if self.verbose:
       self.print_model_architecture()
-    self.remove_unused_layers()
+    self.remove_ignored_layers()
     self.parse_output_file()
     self.build_konverted_model()
 
@@ -72,7 +72,7 @@ class Konverter:
       if layer.name == Layers.Dense.name:
         model_line = f'l{idx} = {layer.string.format(prev_output, idx, idx)}'
         model_builder['model'].append(model_line)
-        if layer.info.has_activation:
+        if layer.info.has_activation and layer.info.activation.name != Activations.Linear.name:
           if layer.info.activation.needs_function:
             lyr_w_act = f'l{idx} = {layer.info.activation.alias.lower()}(l{idx})'
           else:  # eg. tanh or relu
@@ -165,8 +165,8 @@ class Konverter:
     with open(f'{self.output_file}.py', 'w') as f:
       f.write(output.replace('\t', self.indent))
 
-  def remove_unused_layers(self):
-    self.layers = [layer for layer in self.layers if layer.name not in support.unused_layers]
+  def remove_ignored_layers(self):
+    self.layers = [layer for layer in self.layers if layer.name not in LAYERS_IGNORED]
 
   def parse_output_file(self):
     if self.output_file is None:  # user hasn't supplied output file path, use input file name in same dir
@@ -186,7 +186,8 @@ class Konverter:
   def print_model_architecture(self):
     success('\nSuccessfully got model architecture! 😄\n')
     info('Layers:')
-    to_print = [[COLORS.BASE.format(74) + f'name: {layer.alias}' + COLORS.ENDC] for layer in self.layers]
+    ignored_txt = {True: ' (ignored)', False: ''}
+    to_print = [[COLORS.BASE.format(74) + f'name: {layer.alias}{ignored_txt[layer.info.is_ignored]}' + COLORS.ENDC] for layer in self.layers]
     max_len = 0
     indentation = '  '
     for idx, layer in enumerate(self.layers):
@@ -205,8 +206,14 @@ class Konverter:
     print(COLORS.ENDC, end='')
 
   def get_layers(self):
-    for layer in self.model.layers:
-      layer = support.get_layer_info(layer)
+    for idx, layer in enumerate(self.model.layers):
+      next_layer = None
+      if idx < len(self.model.layers) - 1:
+        next_layer = self.model.layers[idx + 1]
+
+      layer = support.get_layer_info(layer, next_layer)
+      # if layer.name == 'keras.layers.Dense':
+      #   raise Exception("STOP")
       if layer.info.supported:
         self.layers.append(layer)
       else:
